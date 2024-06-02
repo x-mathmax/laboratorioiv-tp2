@@ -1,0 +1,79 @@
+html, body {
+    background: url('../../../assets/clinicaBackground.jpg') no-repeat center center fixed;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow-x: hidden;
+}
+
+/* body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    font-family: Arial, sans-serif;
+    background: url('../../../assets/clinicaBackground.jpg') no-repeat center center fixed;
+    background-size: cover;
+} */
+
+.container {
+    
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    color: white;
+}
+
+
+.center-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+.logo {
+    width: 600px;
+    height: 600px;
+    margin-bottom: 20px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.buttons {
+    display: flex;
+    gap: 20px;
+}
+
+.btn {
+    padding: 10px 20px;
+    font-size: 1em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login {
+    background-color: #285E96;
+    color: white;
+}
+
+.login:hover {
+    background-color: #0A056B;
+}
+
+.register {
+    background-color: #285E96;
+    color: white;
+}
+
+.register:hover {
+    background-color:#0A056B;
+}
