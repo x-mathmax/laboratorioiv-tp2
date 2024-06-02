@@ -16,4 +16,8 @@ export class WelcomeComponent {
     this.router.navigate(['/login']);
   }
 
+  goRegister():void {
+    this.router.navigate(['/registro']);
+  }
+
 }

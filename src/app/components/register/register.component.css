@@ -1,0 +1,49 @@
+html, body {
+    background: url('../../../assets/allBackground.jpg') no-repeat center center fixed;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow-x: hidden;
+}
+
+.container {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+.arrowLeft {
+    color: #FFF;
+    background-color: #285E96;
+    margin-left: 20px;
+    margin-top: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border-color: #285E96;
+    overflow: hidden;
+
+}
+  
+  .form-container {
+    margin-top: 20px;
+  }
+
+  .backgroundBlue {
+    background-color: #285E96;
+    color: white;  
+    margin-bottom: 10px;
+}
+
+.backgroundBlue:hover {
+    background-color: #0A056B;
+}
+

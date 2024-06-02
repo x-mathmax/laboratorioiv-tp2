@@ -6,8 +6,8 @@ export const routes: Routes = [
     loadComponent: () => import('./components/welcome/welcome.component').then(c => c.WelcomeComponent) },
     { path: 'login',
     loadComponent: () => import('./components/login/login.component').then(c => c.LoginComponent) },
-    { path: 'registro/especialista',
-    loadComponent: () => import('./components/alta-especialistas/alta-especialistas.component').then(c => c.AltaEspecialistasComponent) },
+    { path: 'registro',
+    loadComponent: () => import('./components/register/register.component').then(c => c.RegisterComponent) },
 ];
 
 // export const routes: Routes = [

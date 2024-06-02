@@ -1,1 +1,23 @@
-<p>register works!</p>
+<body>
+    <button class="arrowLeft" (click)="goinit()">
+        <i class="fas fa-arrow-left"></i>
+    </button>
+
+    <div class="container">
+        <h1>Seleccione el tipo de registro a realizar:</h1>
+        <div class="button-container">
+        <button data-mdb-button-init data-mdb-ripple-init class="btn btn-lg backgroundBlue"
+        style="padding-left: 2.5rem; padding-right: 2.5rem;" (click)="mostrarAltaPaciente()">Paciente</button>
+        <button data-mdb-button-init data-mdb-ripple-init class="btn btn-lg backgroundBlue"
+        style="padding-left: 2.5rem; padding-right: 2.5rem;" (click)="mostrarAltaEspecialista()">Especialista</button>
+        </div>
+        <div class="form-container">
+        <ng-container *ngIf="componenteActivo === 'paciente'">
+            <app-alta-pacientes></app-alta-pacientes>
+        </ng-container>
+        <ng-container *ngIf="componenteActivo === 'especialista'">
+            <app-alta-especialistas></app-alta-especialistas>
+        </ng-container>
+        </div>
+    </div>
+</body>   
