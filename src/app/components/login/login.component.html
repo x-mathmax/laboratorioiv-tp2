@@ -1,4 +1,9 @@
 <section class="vh-100">
+  <div>
+    <button class="arrowLeft" (click)="goinit()">
+      <i class="fas fa-arrow-left"></i>
+    </button>
+  </div>
     <div class="container-fluid h-custom">
       <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col-md-9 col-lg-6 col-xl-5">
@@ -23,7 +28,7 @@
   
             <div class="text-center text-lg-start mt-4 pt-2">
               <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-lg backgroundBlue"
-                style="padding-left: 2.5rem; padding-right: 2.5rem;" >Iniciar Sesión</button>
+                style="padding-left: 2.5rem; padding-right: 2.5rem;" (click)="Login()">Iniciar Sesión</button>
                 <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-lg backgroundBlue"
                 style="padding-left: 2.5rem; padding-right: 2.5rem; margin-left: 2rem;">Administrador</button>
             </div>
