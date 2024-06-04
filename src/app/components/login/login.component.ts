@@ -56,6 +56,8 @@ export class LoginComponent implements OnInit {
       username: 'administrador@gmail.com',
       password: 'admin1234'
     });
+    this.username = 'administrador@gmail.com';
+    this.password = 'admin1234';
   }
 
   espeLoading():void {
@@ -63,6 +65,8 @@ export class LoginComponent implements OnInit {
       username: 'especialista@gmail.com',
       password: 'espe1234'
     });
+    this.username = 'especialista@gmail.com';
+    this.password = 'espe1234';
   }
 
   paciLoading():void {
@@ -70,6 +74,8 @@ export class LoginComponent implements OnInit {
       username: 'paciente@gmail.com',
       password: 'paci1234'
     });
+    this.username = 'paciente@gmail.com';
+    this.password = 'paci1234';
   }
 
   goinit():void {
