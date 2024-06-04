@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Auth } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -6,7 +7,7 @@ import { Injectable } from '@angular/core';
 export class AuthService {
   private tipoUser: string;
 
-  constructor() { 
+  constructor(private auth: Auth) { 
     this.tipoUser = '';
   }
 
@@ -15,5 +16,9 @@ export class AuthService {
     //harcodeo para pruebas momentaneamente
     this.tipoUser = 'administrador';
     return this.tipoUser;
+  }
+
+  isMailVerificated() : boolean{
+    return this.auth.currentUser?.emailVerified!;
   }
 }

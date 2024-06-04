@@ -3,11 +3,13 @@ import { Usuario } from "./Usuario";
 export class Especialista extends Usuario{
     especialidad: string;
     foto: string;
+    habilitado: boolean;
   
     constructor(nombre: string, apellido: string, edad:number, dni: number, mail: string, password: string, tipoUser:string,
-        especialidad: string, foto: string) {
+        especialidad: string, foto: string, habilitado: boolean) {
         super(nombre, apellido, edad, dni, mail, password, tipoUser)
         this.especialidad = especialidad;
         this.foto = foto;  
+        this.habilitado = habilitado;
     }
 }

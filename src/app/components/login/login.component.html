@@ -11,18 +11,18 @@
             class="img-fluid" alt="Sample image">
         </div>
         <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-          <form>  
+          <form [formGroup]="loginForm">  
             <!-- Email input -->
             <div data-mdb-input-init class="form-outline mb-4">
               <input type="email" id="form3Example3" class="form-control form-control-lg"
-                placeholder="Ingresa tu email"  name="username" required/>
+                placeholder="Ingresa tu email" formControlName="username" name="username" required/>
               <label class="form-label" for="form3Example3" id="customLetter">Correo electrónico</label>
             </div>
   
             <!-- Password input -->
             <div data-mdb-input-init class="form-outline mb-3">
               <input type="password" id="form3Example4" class="form-control form-control-lg"
-                placeholder="Ingresa tu contraseña"  name="password" requiered/>
+                placeholder="Ingresa tu contraseña" formControlName="password" name="password" requiered/>
               <label class="form-label" for="form3Example4" id="customLetter">Contraseña</label>
             </div>
   
@@ -30,13 +30,13 @@
               <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-lg backgroundBlue"
                 style="padding-left: 2.5rem; padding-right: 2.5rem;" (click)="Login()">Iniciar Sesión</button>
                 <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-lg backgroundBlue"
-                style="padding-left: 2.5rem; padding-right: 2.5rem; margin-left: 2rem;">Administrador</button>
+                style="padding-left: 2.5rem; padding-right: 2.5rem; margin-left: 2rem;"(click)="adminLoading()">Administrador</button>
             </div>
             <div>
                 <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-lg backgroundBlue"
-                style="padding-left: 2.5rem; padding-right: 2.5rem; margin-left: 2rem;">Especialista</button>
+                style="padding-left: 2.5rem; padding-right: 2.5rem; margin-left: 2rem;"(click)="espeLoading()">Especialista</button>
                 <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-lg backgroundBlue"
-                style="padding-left: 2.5rem; padding-right: 2.5rem; margin-left: 2rem;">Usuario</button>
+                style="padding-left: 2.5rem; padding-right: 2.5rem; margin-left: 2rem;" (click)="paciLoading()">Paciente</button>
             </div>
 
             <div>
