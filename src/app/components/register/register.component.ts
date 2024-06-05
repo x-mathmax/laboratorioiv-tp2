@@ -3,6 +3,8 @@ import { AltaEspecialistasComponent } from '../alta-especialistas/alta-especiali
 import { AltaPacientesComponent } from '../alta-pacientes/alta-pacientes.component';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { Paciente } from '../../models/Paciente';
+import { Especialista } from '../../models/Especialista';
 
 @Component({
   selector: 'app-register',

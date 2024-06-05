@@ -16,12 +16,12 @@ export class AltaPacientesComponent {
   form: FormGroup;
   selectedFile: File | null = null;
   selectedFileTwo: File | null = null;
+  pacienteAlta : Paciente;
 
   constructor(
     private fb: FormBuilder,
     private firestoreService: FirestoreService,
-    private storage: StorageService,
-    private pacienteAlta : Paciente
+    private storage: StorageService
   ) {
     this.form = this.fb.group({
       nombre: [''],
@@ -34,6 +34,7 @@ export class AltaPacientesComponent {
       imagenUno: [' '],
       imagenDos: [' '],
     });
+    this.pacienteAlta = new Paciente('', '', 0, 0, '', '', '', '', '', '');
   }
 
   onFileSelected(event: any, inputNumber: number): void {
