@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { DataService } from '../../services/data.service';
+import { FirestoreService } from '../../services/firestore.service';
 
 @Component({
   selector: 'app-home',
@@ -15,13 +16,22 @@ export class HomeComponent implements OnInit{
   tipoUser?: string;
   usuario: string;
 
-  constructor(private router : Router, private auth : AuthService, private data: DataService){
+  constructor(private router : Router, private auth : AuthService, private data: DataService,
+    private firestoreService: FirestoreService
+  ){
     this.tipoUser = '';
     this.usuario = this.data.getItem('username');
   }
 
   ngOnInit(): void {
-    this.tipoUser = this.auth.getTipoUser();
+    this.firestoreService.getAndSaveTipoUserByEmail(this.usuario)
+    .then(data => {
+      console.log("Datos de get bla bla",data);
+      this.tipoUser = data;
+    })
+    .catch(error => {
+      console.error("Error:", error);
+    });
   }
 
   goUsuarios():void {

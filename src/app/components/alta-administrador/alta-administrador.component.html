@@ -1,5 +1,6 @@
 <section class="vh-100 gradient-custom">
     <div class="container py-5 ">
+      <form [formGroup]="form" (ngSubmit)="cargarAdministrador()">
       <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col-12 col-md-8 col-lg-6 col-xl-5">
           <div class="card text-white" style="border-radius: 1rem;">
@@ -42,7 +43,7 @@
 
                 <div data-mdb-input-init class="form-outline form-white mb-4">
                   <label for="imagen">Subir Imagen:</label>
-                  <input type="file" id="imagen">
+                  <input type="file" (change)="onFileSelected($event)" id="imagen">
                 </div>
   
                 <button  data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-light btn-lg px-5 " 
@@ -52,6 +53,7 @@
           </div>
         </div>
       </div>
+    </form>
     </div>
 </section>
 

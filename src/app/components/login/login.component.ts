@@ -20,12 +20,14 @@ export class LoginComponent implements OnInit {
   username: string;
   password: string;
   loginForm!: FormGroup;
+  tipoUser: string;
 
   constructor(private dataService: DataService, private router: Router, public auth: Auth, private firestoreService : FirestoreService,
     private fb: FormBuilder
   ) { 
     this.username = '';
     this.password = '';
+    this.tipoUser = '';
   }
 
   ngOnInit(): void {
@@ -38,9 +40,20 @@ export class LoginComponent implements OnInit {
 
   Login() {
     signInWithEmailAndPassword(this.auth, this.username, this.password).then((res) => {
+      console.log(this.username, this.password);
       if (res.user.email !== null) {
         this.username = res.user.email;
         this.dataService.setUserAndPassTest(this.username, '');
+        
+
+        this.firestoreService.getAndSaveTipoUserByEmail(this.username)
+        .then(data => {
+          console.log("Datos de get bla bla",data);
+        })
+        .catch(error => {
+          console.error("Error:", error);
+        });
+
         this.router.navigate(['/home']);
       } 
       
@@ -81,4 +94,6 @@ export class LoginComponent implements OnInit {
   goinit():void {
     this.router.navigate(['/welcome']);
   }
+
+  
 }

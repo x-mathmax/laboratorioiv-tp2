@@ -1,5 +1,6 @@
 <section class="vh-100 gradient-custom">
     <div class="container py-5 ">
+      <form [formGroup]="form" (ngSubmit)="cargarEspecialista()">
       <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col-12 col-md-8 col-lg-6 col-xl-5">
           <div class="card text-white" style="border-radius: 1rem;">
@@ -11,28 +12,28 @@
                 <p class="text-white-50 mb-5">Por favor, ingrese los datos solicitados a continuación:</p>
 
                 <div data-mdb-input-init class="form-outline form-white mb-4">
-                  <input type="nombre" id="nombre" class="form-control form-control-lg" requiered/>
+                  <input type="nombre" id="nombre" class="form-control form-control-lg" formControlName="nombre" requiered/>
                   <label class="form-label customLetter" for="nombre">Nombre:</label>
                 </div>
 
                 <div data-mdb-input-init class="form-outline form-white mb-4">
-                  <input type="apellido" id="apellido" class="form-control form-control-lg" requiered/>
+                  <input type="apellido" id="apellido" class="form-control form-control-lg" formControlName="apellido" requiered/>
                   <label class="form-label customLetter" for="apellido">Apellido:</label>
                 </div>
   
                 <div data-mdb-input-init class="form-outline form-white mb-4">
-                  <input type="edad" id="edad" class="form-control form-control-lg" requiered/>
+                  <input type="edad" id="edad" class="form-control form-control-lg" formControlName="edad" requiered/>
                   <label class="form-label customLetter" for="edad">Edad:</label>
                 </div>
 
                 <div data-mdb-input-init class="form-outline form-white mb-4">
-                  <input type="dni" id="dni" class="form-control form-control-lg" requiered/>
+                  <input type="dni" id="dni" class="form-control form-control-lg" formControlName="dni" requiered/>
                   <label class="form-label customLetter" for="dni">Dni:</label>
                 </div>
 
                 <div data-mdb-input-init class="form-outline form-white mb-4">
-                  <label for="especialidades">Selecciona tu especialidad:</label>
-                  <select id="especialidades" name="especialidades" onchange="handleSpecialtyChange()">
+                  <label for="especialidad">Selecciona tu especialidad:</label>
+                  <select id="especialidad" name="especialidad">
                       <option value="medicina">Medicina</option>
                       <option value="ingenieria">Ingeniería</option>
                       <option value="derecho">Derecho</option>
@@ -48,18 +49,18 @@
 
                 
                 <div data-mdb-input-init class="form-outline form-white mb-4">
-                  <input type="email" id="email" class="form-control form-control-lg" requiered/>
+                  <input type="email" id="email" class="form-control form-control-lg" formControlName="email" requiered/>
                   <label class="form-label customLetter" for="email">Correo electrónico</label>
                 </div>
   
                 <div data-mdb-input-init class="form-outline form-white mb-4">
-                  <input  type="password" id="typePasswordX" class="form-control form-control-lg" requiered/>
+                  <input  type="password" id="typePasswordX" class="form-control form-control-lg" formControlName="password" requiered/>
                   <label class="form-label customLetter"  for="typePasswordX">Contraseña</label>
                 </div>
 
                 <div data-mdb-input-init class="form-outline form-white mb-4">
-                  <label for="imagen">Subir Imagen:</label>
-                  <input type="file" id="imagen">
+                  <label for="imagen" >Subir Imagen:</label>
+                  <input type="file" (change)="onFileSelected($event)" id="imagen">
                 </div>
   
                 <button  data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-light btn-lg px-5 " 
@@ -69,6 +70,7 @@
           </div>
         </div>
       </div>
+    </form>
     </div>
 </section>
 

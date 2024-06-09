@@ -1,1 +1,27 @@
-<p>tabla-usuarios works!</p>
+<table>
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Edad</th>
+        <th>Email</th>
+        <th>Tipo</th>
+        <th>Estado</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users$ | async">
+        <td>{{ user.nombre }}</td>
+        <td>{{ user.apellido }}</td>
+        <td>{{ user.edad }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.tipoUser }}</td>
+        <td>{{ user.habilitado }}</td>
+        <td>
+          <button (click)="onToggleHabilitado(user)">
+            {{ user.habilitado ? 'Deshabilitar' : 'Habilitar' }}
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
