@@ -10,7 +10,7 @@ export class StorageService {
   constructor(private storage: Storage) { }
 
   uploadImage(file: File) {
-    const filePath = `movies/${Date.now()}_${file.name}`;
+    const filePath = `users/${Date.now()}_${file.name}`;
     const storageRef = ref(this.storage, filePath);
     const uploadTask = uploadBytesResumable(storageRef, file);
 

@@ -14,35 +14,47 @@
                 <div data-mdb-input-init class="form-outline form-white mb-4">
                   <input type="nombre" id="nombre" class="form-control form-control-lg" formControlName="nombre" requiered/>
                   <label class="form-label customLetter" for="nombre">Nombre:</label>
+                  <ng-container *ngIf="nombre?.hasError('pattern')">
+                    <small class="text-danger">Sólo debe contener solo letras</small>
+                  </ng-container>
                 </div>
 
                 <div data-mdb-input-init class="form-outline form-white mb-4">
                   <input type="apellido" id="apellido" class="form-control form-control-lg" formControlName="apellido" requiered/>
                   <label class="form-label customLetter" for="apellido">Apellido:</label>
+                  <ng-container *ngIf="apellido?.hasError('pattern')">
+                    <small class="text-danger">Sólo debe contener solo letras</small>
+                  </ng-container>
                 </div>
   
                 <div data-mdb-input-init class="form-outline form-white mb-4">
                   <input type="edad" id="edad" class="form-control form-control-lg" formControlName="edad" requiered/>
                   <label class="form-label customLetter" for="edad">Edad:</label>
+                  <ng-container *ngIf="edad?.hasError('min')">
+                    <small class="text-danger">Debe ser mayor de edad</small>
+                  </ng-container>
                 </div>
 
                 <div data-mdb-input-init class="form-outline form-white mb-4">
                   <input type="dni" id="dni" class="form-control form-control-lg" formControlName="dni" requiered/>
                   <label class="form-label customLetter" for="dni">Dni:</label>
+                  <ng-container *ngIf="dni?.hasError('maxLength')">
+                    <small class="text-danger">El maximo de caracteres permitidos es 8</small>
+                  </ng-container>
                 </div>
 
                 <div data-mdb-input-init class="form-outline form-white mb-4">
                   <label for="especialidad">Selecciona tu especialidad:</label>
-                  <select id="especialidad" name="especialidad">
+                  <select id="especialidad" formControlName="especialidad" (change)="onEspecialidadChange($event)">
                       <option value="medicina">Medicina</option>
                       <option value="ingenieria">Ingeniería</option>
                       <option value="derecho">Derecho</option>
                       <option value="otra">Otra</option>
                   </select>
       
-                  <div id="other-specialty-container" class="hidden">
+                  <div [class.hidden]="!mostrarOtraEspecialidad">
                       <label for="otra-especialidad">Especifica tu especialidad:</label>
-                      <input type="text" id="otra-especialidad" name="otra-especialidad">
+                      <input type="text" id="otraEspecialidad"  formControlName="otraEspecialidad">
                   </div>
                 </div>
 
@@ -51,11 +63,19 @@
                 <div data-mdb-input-init class="form-outline form-white mb-4">
                   <input type="email" id="email" class="form-control form-control-lg" formControlName="email" requiered/>
                   <label class="form-label customLetter" for="email">Correo electrónico</label>
+                  <ng-container *ngIf="email?.hasError('pattern')">
+                    <small class="text-danger">Formato inválido</small>
+                  </ng-container>
                 </div>
   
                 <div data-mdb-input-init class="form-outline form-white mb-4">
                   <input  type="password" id="typePasswordX" class="form-control form-control-lg" formControlName="password" requiered/>
                   <label class="form-label customLetter"  for="typePasswordX">Contraseña</label>
+                  <ng-container *ngIf="password?.hasError('minlength')">
+                    <small class="text-danger">
+                      La clave debe tener mínimo {{password?.getError('minlength').requiredLength}} caracteres
+                    </small>
+                  </ng-container>
                 </div>
 
                 <div data-mdb-input-init class="form-outline form-white mb-4">

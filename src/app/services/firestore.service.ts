@@ -27,17 +27,29 @@ export class FirestoreService {
     }
   }
 
-  agregarEspecialista(especialista: Especialista) : void{
-    try{
-      let c = collection(this.firestore, 'usuarios');
-      addDoc(c, { nombre : especialista.nombre, apellido: especialista.apellido, edad: especialista.edad, dni: especialista.dni,
-        especialidad: especialista.especialidad, email: especialista.mail, password: especialista.password, foto: especialista.foto,
-        habilitado: false, tipoUser : 'especialista'
-      });
-    }catch(error){
+async agregarEspecialista(especialista: Especialista): Promise<void> {
+  return new Promise<void>((resolve, reject) => {
+    let c = collection(this.firestore, 'usuarios');
+    addDoc(c, {
+      nombre: especialista.nombre,
+      apellido: especialista.apellido,
+      edad: especialista.edad,
+      dni: especialista.dni,
+      especialidad: especialista.especialidad,
+      email: especialista.mail,
+      password: especialista.password,
+      foto: especialista.foto,
+      habilitado: false,
+      tipoUser: 'especialista'
+    }).then(() => {
+      console.log('Especialista agregado exitosamente en Firestore.');
+      resolve(); 
+    }).catch((error) => {
       console.error('No se pudo agregar el Especialista. Error: ', error);
-    }
-  }
+      reject(error);
+    });
+  });
+}
 
   agregarAdministrador(administrador: Administrador) : void{
     try{
@@ -65,6 +77,40 @@ export class FirestoreService {
     }
   }
 
+  // async getAndSaveTipoUserAndStatusByEmail(email: string): Promise<{ tipoUser: string, habilitado: boolean }> {
+  //   try {
+  //     const data = await firstValueFrom(this.getDocDataByEmail(email).pipe(first()));
+  //     if (data) {
+  //       const tipoUser = data.tipoUser; 
+  //       const habilitado = data.habilitado;
+  //       return { tipoUser, habilitado };
+  //     } else {
+  //       throw new Error('Usuario no encontrado');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error al obtener el tipo de usuario:', error);
+  //     throw error;
+  //   }
+  // }
+
+  async getAndSaveTipoUserAndStatusByEmail(email: string): Promise<{ tipoUser: string, habilitado: boolean }> {
+    return new Promise<{ tipoUser: string, habilitado: boolean }>(async (resolve, reject) => {
+      try {
+        const data = await firstValueFrom(this.getDocDataByEmail(email).pipe(first()));
+        if (data) {
+          const tipoUser = data.tipoUser;
+          const habilitado = data.habilitado;
+          resolve({ tipoUser, habilitado });
+        } else {
+          reject(new Error('Usuario no encontrado'));
+        }
+      } catch (error) {
+        console.error('Error al obtener el tipo de usuario:', error);
+        reject(error);
+      }
+    });
+  }
+  
   getDocData(path: string) {
     return  docData(doc(this.firestore, path), {idField:  'id'}) as  Observable<any>
 }

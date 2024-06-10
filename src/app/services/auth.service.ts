@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, sendEmailVerification, onAuthStateChanged, User} from '@angular/fire/auth';
 import { DataService } from './data.service';
 
 @Injectable({
@@ -16,24 +16,33 @@ export class AuthService {
     return this.auth.currentUser?.emailVerified!;
   }
 
-  Register(email: string, pass: string) { 
-    createUserWithEmailAndPassword(this.auth, email, pass).then((res) => {   
-      this.flagError = false;
-      console.log(res);
-    }).catch((e) => {
-      this.flagError = true;
 
-      switch (e.code) {
-        case "auth/invalid-email":
-          this.data.executePopUp("El email ingresado es inválido.");
-          break;
-        case "auth/email-already-in-use":
-          this.data.executePopUp("El email ingresado ya se encuentra registrado.");
-          break;
-        default:
-          this.msjError = e.code
-          break;
-      }
+  async Register(email: string, pass: string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      createUserWithEmailAndPassword(this.auth, email, pass).then((res) => {
+        this.flagError = false;
+        console.log(res);
+        if (res.user.email != null){
+          sendEmailVerification(res.user);
+        }
+        resolve();
+      })
+      .catch((e) => {
+        this.flagError = true;
+  
+        switch (e.code) {
+          case "auth/invalid-email":
+            this.data.executePopUp("El email ingresado es inválido.");
+            break;
+          case "auth/email-already-in-use":
+            this.data.executePopUp("El email ingresado ya se encuentra registrado.");
+            break;
+          default:
+            this.msjError = e.code;
+            break;
+        }
+        reject(e);
+      });
     });
   }
 }
