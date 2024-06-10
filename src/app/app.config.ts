@@ -9,6 +9,7 @@ import { enviromentConfig } from '../environmentConfig';
 import { provideHttpClient } from '@angular/common/http';
 
 import { routes } from './app.routes';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 
 export const appConfig: ApplicationConfig = {
@@ -19,6 +20,6 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(provideFirestore(() => getFirestore())), 
     importProvidersFrom(provideDatabase(() => getDatabase())),
     importProvidersFrom(provideStorage(() => getStorage())),
-    provideHttpClient()
+    provideHttpClient(), provideAnimationsAsync()
   ],
 };

@@ -47,6 +47,12 @@ height: calc(100% - 73px);
 
 }
 
+.fab-container {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+  }
+
 @media (max-width: 450px) {
 .h-custom {
 height: 50%;

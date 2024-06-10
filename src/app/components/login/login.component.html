@@ -47,4 +47,35 @@
         </div>
       </div>
     </div>
+    <div class="fab-container">
+      <button mat-fab color="primary" [matMenuTriggerFor]="menu" aria-label="FAB Menu">
+        <mat-icon>add</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+          <mat-icon>home</mat-icon>
+          <span>Paciente 1</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>person</mat-icon>
+          <span>Paciente 2</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>settings</mat-icon>
+          <span>Paciente 3</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>info</mat-icon>
+          <span>Especialista 1</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>help</mat-icon>
+          <span>Especialista 2</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>exit_to_app</mat-icon>
+          <span>Administrador</span>
+        </button>
+      </mat-menu>
+    </div>
   </section>
