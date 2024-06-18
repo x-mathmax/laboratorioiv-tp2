@@ -13,5 +13,7 @@ export const routes: Routes = [
     { path: 'usuarios',
     loadComponent: () => import('./components/usuarios/usuarios.component').then(c => c.UsuariosComponent) },
     { path: 'turnos',
-        loadComponent: () => import('./components/turnos/turnos.component').then(c => c.TurnosComponent) }
+        loadComponent: () => import('./components/turnos/turnos.component').then(c => c.TurnosComponent) },
+    { path: 'perfil',
+        loadComponent: () => import('./components/perfil/perfil.component').then(c => c.PerfilComponent) }
 ];

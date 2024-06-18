@@ -45,4 +45,8 @@ export class HomeComponent implements OnInit{
   goTurnos():void {
     this.router.navigate(['/turnos']);
   } 
+
+  goPerfil():void {
+    this.router.navigate(['/perfil']);
+  } 
 }

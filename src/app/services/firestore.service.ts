@@ -88,6 +88,21 @@ async agregarAdministrador(administrador: Administrador): Promise<void> {
     }
   }
 
+  async getAndSaveInfoUserByEmail(email: string): Promise<Paciente> {
+    try {
+      const data = await firstValueFrom(this.getDocDataByEmail(email).pipe(first()));
+      if (data) {
+        const paciente = new Paciente(data.nombre, data.apellido, data.edad, data.dni, data.email, data.password, data.tipoUser, data.obraSocial, data.imagenUno, data.imagenDos);
+        return paciente;
+      } else {
+        throw new Error('Usuario no encontrado');
+      }
+    } catch (error) {
+      console.error('Error al obtener el tipo de usuario:', error);
+      throw error;
+    }
+  }
+
   // async getAndSaveTipoUserAndStatusByEmail(email: string): Promise<{ tipoUser: string, habilitado: boolean }> {
   //   try {
   //     const data = await firstValueFrom(this.getDocDataByEmail(email).pipe(first()));
