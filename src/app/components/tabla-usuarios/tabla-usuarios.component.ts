@@ -19,10 +19,11 @@ export class TablaUsuariosComponent{
   }
 
   async onToggleHabilitado(user: UsuarioDto): Promise<void> {
+    console.log(user);
     try {
       const updatedValue = !user.habilitado;
-      console.log("usuario en ontogglehabilitado:", user.mail);
-      await this.firestoreService.toggleUserHabilitado(user.mail, updatedValue);
+      console.log("usuario en ontogglehabilitado:", user.email);
+      await this.firestoreService.toggleUserHabilitado(user.email, updatedValue);
       user.habilitado = updatedValue;
     } catch (error) {
       console.error('Error al actualizar el usuario:', error);

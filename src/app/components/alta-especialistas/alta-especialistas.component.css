@@ -16,3 +16,10 @@
 .card {
     background-color: #285E96;
 }
+
+.captchita {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 160px; 
+}

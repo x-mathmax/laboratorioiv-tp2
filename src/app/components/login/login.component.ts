@@ -15,6 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -136,5 +137,8 @@ export class LoginComponent implements OnInit {
     this.router.navigate(['/welcome']);
   }
 
+  //w5b3g.test@inbox.testmail.app
+  //test1234
+  // especialista
   
 }

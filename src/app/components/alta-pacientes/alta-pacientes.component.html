@@ -14,21 +14,33 @@
                 <div data-mdb-input-init class="form-outline form-white mb-4">
                   <input type="nombre" id="nombre" class="form-control form-control-lg" formControlName="nombre" requiered  />
                   <label class="form-label customLetter" for="nombre">Nombre:</label>
+                  <ng-container *ngIf="nombre?.hasError('pattern')">
+                    <small class="text-danger">Sólo debe contener solo letras</small>
+                  </ng-container>
                 </div>
 
                 <div data-mdb-input-init class="form-outline form-white mb-4">
                   <input type="apellido" id="apellido" class="form-control form-control-lg" formControlName="apellido" requiered/>
                   <label class="form-label customLetter" for="apellido">Apellido:</label>
+                  <ng-container *ngIf="apellido?.hasError('pattern')">
+                    <small class="text-danger">Sólo debe contener solo letras</small>
+                  </ng-container>
                 </div>
   
                 <div data-mdb-input-init class="form-outline form-white mb-4">
                   <input type="edad" id="edad" class="form-control form-control-lg" formControlName="edad" requiered/>
                   <label class="form-label customLetter" for="edad">Edad:</label>
+                  <ng-container *ngIf="edad?.hasError('min')">
+                    <small class="text-danger">Debe ser mayor de edad</small>
+                  </ng-container>
                 </div>
 
                 <div data-mdb-input-init class="form-outline form-white mb-4">
                   <input type="dni" id="dni" class="form-control form-control-lg" formControlName="dni" requiered/>
                   <label class="form-label customLetter" for="dni">Dni:</label>
+                  <ng-container *ngIf="dni?.hasError('maxLength')">
+                    <small class="text-danger">El maximo de caracteres permitidos es 8</small>
+                  </ng-container>
                 </div>
 
                 <div data-mdb-input-init class="form-outline form-white mb-4">
@@ -45,11 +57,19 @@
                 <div data-mdb-input-init class="form-outline form-white mb-4">
                   <input type="email" id="email" class="form-control form-control-lg" formControlName="email" requiered/>
                   <label class="form-label customLetter" for="email">Correo electrónico</label>
+                  <ng-container *ngIf="email?.hasError('pattern')">
+                    <small class="text-danger">Formato inválido</small>
+                  </ng-container>
                 </div>
   
                 <div data-mdb-input-init class="form-outline form-white mb-4">
                   <input  type="password" id="typePasswordX" class="form-control form-control-lg" formControlName="password" requiered/>
                   <label class="form-label customLetter"  for="typePasswordX">Contraseña</label>
+                  <ng-container *ngIf="password?.hasError('minlength')">
+                    <small class="text-danger">
+                      La clave debe tener mínimo {{password?.getError('minlength').requiredLength}} caracteres
+                    </small>
+                  </ng-container>
                 </div>
 
                 <div data-mdb-input-init class="form-outline form-white mb-4">
@@ -60,7 +80,17 @@
                 <div data-mdb-input-init class="form-outline form-white mb-4">
                     <label for="imagenDos" >Subir Segunda Imagen:</label>
                     <input type="file" (change)="onFileSelected($event, 2)" id="imagenDos">
-                  </div>
+                </div>
+
+                <div class="captchita">
+                  <ngx-recaptcha2
+                    #captchaElem
+                    [siteKey]="'6LcscvUpAAAAAMrDsxFrU2VhCw9H01xGa3i7APtx'"
+                    (change)="resolvedCaptcha('$event')"
+                    [useGlobalDomain]="false"
+                    formControlName="recaptcha"
+                  ></ngx-recaptcha2>
+                </div>
   
                 <button  data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-light btn-lg px-5 " 
                 type="submit">Crear</button> 

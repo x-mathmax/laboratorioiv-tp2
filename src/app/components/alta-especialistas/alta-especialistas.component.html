@@ -46,14 +46,14 @@
                 <div data-mdb-input-init class="form-outline form-white mb-4">
                   <label for="especialidad">Selecciona tu especialidad:</label>
                   <select id="especialidad" formControlName="especialidad" (change)="onEspecialidadChange($event)">
-                      <option value="medicina">Medicina</option>
-                      <option value="ingenieria">Ingeniería</option>
-                      <option value="derecho">Derecho</option>
+                      <option value="medicina">Gastroenterología</option>
+                      <option value="ingenieria">Oftalmología</option>
+                      <option value="derecho">Clínica médica</option>
                       <option value="otra">Otra</option>
                   </select>
       
                   <div [class.hidden]="!mostrarOtraEspecialidad">
-                      <label for="otra-especialidad">Especifica tu especialidad:</label>
+                      <label for="otraEspecialidad">Especifica tu especialidad:</label>
                       <input type="text" id="otraEspecialidad"  formControlName="otraEspecialidad">
                   </div>
                 </div>
@@ -82,8 +82,30 @@
                   <label for="imagen" >Subir Imagen:</label>
                   <input type="file" (change)="onFileSelected($event)" id="imagen">
                 </div>
-  
-                <button  data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-light btn-lg px-5 " 
+
+                <!-- <div>
+                  <ngx-recaptcha2 #captchaElem
+                  [siteKey]="siteKey"
+                  (reset)="handleReset()"
+                  (expire)="handleExpire()"
+                  (load)="handleLoad()"
+                  (success)="handleSuccess($event)"
+                  [useGlobalDomain]="false"
+                  formControlName="recaptcha">
+                </ngx-recaptcha2>
+                </div> -->
+                <div class="captchita">
+                  <ngx-recaptcha2
+                    #captchaElem
+                    [siteKey]="'6LcscvUpAAAAAMrDsxFrU2VhCw9H01xGa3i7APtx'"
+                    (change)="resolvedCaptcha('$event')"
+                    [useGlobalDomain]="false"
+                    formControlName="recaptcha"
+                  ></ngx-recaptcha2>
+                </div>
+
+                <!-- <re-captcha formControlName="recaptcha" siteKey="6Ldxh_QpAAAAAONdr7WSeAKb8NfgIqHvTdtpwobl"></re-captcha> -->
+                <button  data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-light btn-lg px-5" 
                 type="submit">Crear</button> 
               </div>
             </div>

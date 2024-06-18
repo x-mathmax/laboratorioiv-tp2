@@ -14,17 +14,22 @@ import { UsuarioDto } from '../models/UsuarioDto';
 export class FirestoreService {
 
   constructor(public firestore: Firestore) { }
-  
-  agregarPaciente(paciente: Paciente) : void{
-    try{
+
+  async agregarPaciente(paciente: Paciente): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
       let c = collection(this.firestore, 'usuarios');
-      addDoc(c, { nombre : paciente.nombre, apellido: paciente.apellido, edad: paciente.edad, dni: paciente.dni,
+      addDoc(c, {
+        nombre : paciente.nombre, apellido: paciente.apellido, edad: paciente.edad, dni: paciente.dni,
         obraSocial: paciente.obraSocial, email: paciente.mail, password: paciente.password, 
         imagenUno: paciente.imagenUno, imagenDos: paciente.imagenDos, tipoUser : 'paciente'
+      }).then(() => {
+        console.log('Paciente agregado exitosamente en Firestore.');
+        resolve(); 
+      }).catch((error) => {
+        console.error('No se pudo agregar el Paciente. Error: ', error);
+        reject(error);
       });
-    }catch(error){
-      console.error('No se pudo agregar el Paciente. Error: ', error);
-    }
+    });
   }
 
 async agregarEspecialista(especialista: Especialista): Promise<void> {
@@ -50,17 +55,21 @@ async agregarEspecialista(especialista: Especialista): Promise<void> {
     });
   });
 }
-
-  agregarAdministrador(administrador: Administrador) : void{
-    try{
-      let c = collection(this.firestore, 'usuarios');
-      addDoc(c, { nombre : administrador.nombre, apellido: administrador.apellido, edad: administrador.edad, dni: administrador.dni,
+async agregarAdministrador(administrador: Administrador): Promise<void> {
+  return new Promise<void>((resolve, reject) => {
+    let c = collection(this.firestore, 'usuarios');
+    addDoc(c, {
+      nombre : administrador.nombre, apellido: administrador.apellido, edad: administrador.edad, dni: administrador.dni,
         email: administrador.mail, password: administrador.password, foto: administrador.foto, tipoUser : 'administrador'
-      });
-    }catch(error){
+    }).then(() => {
+      console.log('Administrador agregado exitosamente en Firestore.');
+      resolve(); 
+    }).catch((error) => {
       console.error('No se pudo agregar el Administrador. Error: ', error);
-    }
-  }
+      reject(error);
+    });
+  });
+}
 
   async getAndSaveTipoUserByEmail(email: string): Promise<string> {
     try {

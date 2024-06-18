@@ -16,7 +16,7 @@
         <td>{{ user.edad }}</td>
         <td>{{ user.email }}</td>
         <td>{{ user.tipoUser }}</td>
-        <td>{{ user.habilitado }}</td>
+        <td>{{ user.habilitado === true ? 'Habilitado' : user.habilitado === false ? 'Deshabilitado' : '----------' }}</td>
         <td>
           <button (click)="onToggleHabilitado(user)">
             {{ user.habilitado ? 'Deshabilitar' : 'Habilitar' }}

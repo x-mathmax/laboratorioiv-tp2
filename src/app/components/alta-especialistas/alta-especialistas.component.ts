@@ -6,13 +6,15 @@ import { CommonModule } from '@angular/common';
 import { Especialista } from '../../models/Especialista';
 import { AuthService } from '../../services/auth.service';
 import { DataService } from '../../services/data.service';
+import { NgxCaptchaModule } from 'ngx-captcha';
+
 
 @Component({
   selector: 'app-alta-especialistas',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, NgxCaptchaModule],
   templateUrl: './alta-especialistas.component.html',
-  styleUrl: './alta-especialistas.component.css'
+  styleUrl: './alta-especialistas.component.css',
 })
 export class AltaEspecialistasComponent implements OnInit{
   form!: FormGroup;
@@ -20,6 +22,9 @@ export class AltaEspecialistasComponent implements OnInit{
   selectedFileTwo: File | null = null;
   mostrarOtraEspecialidad: boolean = false;
   especialistaAlta : Especialista;
+  siteKey : string = '6LcscvUpAAAAAMrDsxFrU2VhCw9H01xGa3i7APtx';
+  captchaResponse: string | undefined;
+  captchaResolved: boolean = false;
 
 
   constructor(
@@ -43,6 +48,7 @@ export class AltaEspecialistasComponent implements OnInit{
       password: new FormControl("", Validators.minLength(6)),
       otraEspecialidad: new FormControl(" "),
       imagen: new FormControl(""),
+      recaptcha: new FormControl("")
     });
     this.form.get('especialidad')!.valueChanges.subscribe(value => {
       this.mostrarOtraEspecialidad = value === 'otra';
@@ -74,7 +80,16 @@ export class AltaEspecialistasComponent implements OnInit{
   get otraEspecialidad() {
     return this.form.get('otraEspecialidad');
   }
+  get capchita() {
+    return this.form.get('recaptcha');
+  }
 
+  resolvedCaptcha(response: string): void {
+    // this.form.get('recaptcha')?.setValue(true);
+    // this.form.patchValue({ recaptcha: true })
+    console.log("response",response);
+    this.captchaResolved = true;
+  }
 
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];

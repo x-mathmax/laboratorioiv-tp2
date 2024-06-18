@@ -1,24 +1,28 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, FormControl, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, FormControl, Validators, FormsModule } from '@angular/forms';
 import { FirestoreService } from '../../services/firestore.service';
 import { StorageService } from '../../services/storage.service';
 import { CommonModule } from '@angular/common';
 import { Paciente } from '../../models/Paciente';
 import { AuthService } from '../../services/auth.service';
 import { DataService } from '../../services/data.service';
+import { NgxCaptchaModule } from 'ngx-captcha';
 
 @Component({
   selector: 'app-alta-pacientes',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, NgxCaptchaModule, FormsModule],
   templateUrl: './alta-pacientes.component.html',
   styleUrl: './alta-pacientes.component.css'
 })
-export class AltaPacientesComponent {
-  form: FormGroup;
+export class AltaPacientesComponent implements OnInit{
+  form!: FormGroup;
   selectedFile: File | null = null;
   selectedFileTwo: File | null = null;
   pacienteAlta : Paciente;
+  siteKey : string = '6LcscvUpAAAAAMrDsxFrU2VhCw9H01xGa3i7APtx';
+  captchaResponse: string | undefined;
+  captchaResolved: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -27,7 +31,11 @@ export class AltaPacientesComponent {
     private auth: AuthService,
     private data: DataService
   ) {
-    this.form = this.fb.group({
+    this.pacienteAlta = new Paciente('', '', 0, 0, '', '', '', '', '', '');
+  }
+
+  ngOnInit(): void {
+    this.form = new FormGroup({
       nombre: new FormControl("", [Validators.pattern('^[a-zA-Z]+$')]),
       apellido: new FormControl("", [Validators.pattern('^[a-zA-Z]+$')]),
       edad: new FormControl("", Validators.min(18)),
@@ -35,10 +43,36 @@ export class AltaPacientesComponent {
       obraSocial: new FormControl("", Validators.required),
       email: new FormControl("", [Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')]),
       password: new FormControl("", Validators.minLength(4)),
-      imagenUno: new FormControl("", Validators.required),
-      imagenDos: new FormControl("", Validators.required),
+      imagenUno: new FormControl(""),
+      imagenDos: new FormControl(""),
+      recaptcha: new FormControl("")
     });
-    this.pacienteAlta = new Paciente('', '', 0, 0, '', '', '', '', '', '');
+  }
+  get nombre() {
+    return this.form.get('nombre');
+  }
+  get apellido() {
+    return this.form.get('apellido');
+  }
+  get edad() {
+    return this.form.get('edad');
+  }
+  get dni() {
+    return this.form.get('dni');
+  }
+  get email() {
+    return this.form.get('email');
+  }
+  get password() {
+    return this.form.get('password');
+  }
+  get capchita() {
+    return this.form.get('recaptcha');
+  }
+
+  resolvedCaptcha(response: string): void {
+    console.log("response",response);
+    this.captchaResolved = true;
   }
 
   onFileSelected(event: any, inputNumber: number): void {
@@ -50,6 +84,42 @@ export class AltaPacientesComponent {
     }
   }
 
+  async cargarImagenesYObtenerURL(fileOne: File, fileTwo: File): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      let url1: string | undefined;
+      let url2: string | undefined;
+      
+      const subscription1 = this.storage.uploadImage(fileOne).subscribe({
+        next: (url) => {
+          url1 = url;
+          if (url1) {
+            this.pacienteAlta.imagenUno = url1;
+            resolve();
+          }
+        },
+        error: (err) => {
+          console.error('Error al cargar primera imagen:', err);
+          reject(err);
+        }
+      });
+  
+      const subscription2 = this.storage.uploadImage(fileTwo).subscribe({
+        next: (url) => {
+          url2 = url;
+          if (url2) {
+            this.pacienteAlta.imagenDos = url2;
+            resolve();
+          }
+        },
+        error: (err) => {
+          console.error('Error al cargar segunda imagen:', err);
+          reject(err);
+        }
+      });
+    });
+  }
+
+
   async cargarPaciente(){
       this.pacienteAlta.nombre = this.form.get('nombre')?.value;
       this.pacienteAlta.apellido = this.form.get('apellido')?.value;
@@ -58,30 +128,23 @@ export class AltaPacientesComponent {
       this.pacienteAlta.obraSocial = this.form.get('obraSocial')?.value;
       this.pacienteAlta.mail = this.form.get('email')?.value;
       this.pacienteAlta.password = this.form.get('password')?.value;
-    
+
+
       if (this.form.valid && this.selectedFile && this.selectedFileTwo) {
         try {
-        this.storage.uploadImage(this.selectedFile).subscribe(url1 => {
-          this.storage.uploadImage(this.selectedFileTwo!).subscribe(url2 => {
-            const movieData = {
-              ...this.form.value,
-              imagenUno: url1,
-              imagenDos: url2
-            };
-            this.pacienteAlta.imagenUno = url1;
-            this.pacienteAlta.imagenDos = url2;})})
-
-            //agrego el alta en el auth además de en la base de datos.
-            await this.auth.Register(this.pacienteAlta.mail, this.pacienteAlta.password);
+            console.log("fotouno", this.selectedFile)
+            console.log("fotoDos", this.selectedFileTwo);
+            console.log("forms", this.form.valid);
+            const primera = await this.cargarImagenesYObtenerURL(this.selectedFile, this.selectedFileTwo);
+            const segunda = await this.auth.Register(this.pacienteAlta.mail, this.pacienteAlta.password);
+            const tercera = await this.firestoreService.agregarPaciente(this.pacienteAlta);
             
-            await this.firestoreService.agregarPaciente(this.pacienteAlta);
-            
-            this.data.executePopUp('Especialista agregado exitosamente.');
+            this.data.executePopUp('Paciente agregado exitosamente.');
 
             console.log('Paciente agregado exitosamente.');
             this.form.reset();
           } catch (error) {
-            console.error('Error al cargar especialista:', error);
+            console.error('Error al cargar paciente:', error);
           }
       } else {
         console.error('Formulario inválido o no se han seleccionado ambos archivos.');
