@@ -17,10 +17,22 @@
                           <button *ngIf="tipoUser === 'administrador'" type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-md text-white backgroundBlue"
                           (click)="goUsuarios()">Usuarios</button>
                         </li>
-                        <!-- <li class="nav-item" >
-                          <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-md text-white backgroundBlue"
-                          >Volver</button>
-                        </li> -->
+                        <li class="nav-item" >
+                          <button *ngIf="tipoUser !== 'administrador'" type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-md text-white backgroundBlue"
+                          (click)="goTurnos()">Mis turnos</button>
+                        </li>
+                        <li class="nav-item" >
+                          <button *ngIf="tipoUser === 'administrador'" type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-md text-white backgroundBlue"
+                          >Turnos</button>
+                        </li>
+                        <li class="nav-item" >
+                          <button *ngIf="tipoUser === 'administrador' || tipoUser === 'paciente'" type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-md text-white backgroundBlue"
+                          >Solicitar turno</button>
+                        </li>
+                        <li class="nav-item" >
+                          <button *ngIf="tipoUser === 'especialista' || tipoUser === 'paciente'" type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-md text-white backgroundBlue"
+                          >Mi perfil</button>
+                        </li>
                         <li class="nav-item">                    
                           <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-md text-white backgroundBlue"
                           (click)="logout()">Cerrar Sesión</button>

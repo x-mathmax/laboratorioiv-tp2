@@ -41,4 +41,8 @@ export class HomeComponent implements OnInit{
   logout():void {
     this.router.navigate(['/welcome']);
   }
+
+  goTurnos():void {
+    this.router.navigate(['/turnos']);
+  } 
 }
