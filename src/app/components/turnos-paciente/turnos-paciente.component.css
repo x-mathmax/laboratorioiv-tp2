@@ -1,0 +1,15 @@
+.bold {
+    font-weight: bold;
+}
+  
+.large-text {
+    font-size: 1.2em;
+}
+
+.containerTotal {
+    margin-top: 20px;
+}
+
+.filtros {
+    margin-bottom: 20px;
+}

@@ -15,6 +15,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
+import { UserLogData } from '../../models/UserLogData';
+import { Observable } from 'rxjs';
+
 
 @Component({
   selector: 'app-login',
@@ -28,6 +31,10 @@ export class LoginComponent implements OnInit {
   tipoUser: string;
   username: string;
   contra: string;
+  emails: string[] = ['galin80936@gawte.com', 'w5b3g.test@inbox.testmail.app', 'lumlonerki@gufum.com', 'yolmorirtu@gufum.com',
+    'hagnufaspi@gufum.com', 'barbaramiamolinari@gmail.com'];
+  filteredData: UserLogData[] = [];
+  users$: Observable<any[]>;
 
   constructor(private dataService: DataService, private router: Router, public auth: Auth, private firestoreService : FirestoreService,
     private authService: AuthService, private fb: FormBuilder
@@ -35,13 +42,15 @@ export class LoginComponent implements OnInit {
     this.tipoUser = '';
     this.username = '';
     this.contra = '';
+    this.users$ = this.firestoreService.getFilteredData('usuarios', this.emails);
   }
 
   ngOnInit(): void {
     this.loginForm = new FormGroup({
       email: new FormControl("", [Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')]),
       password: new FormControl("", Validators.minLength(6)),
-    });
+    }); 
+    console.log(this.users$);
   }
 
   get email() {
@@ -106,39 +115,19 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  // adminLoading():void {
-  //   this.loginForm.patchValue({
-  //     username: 'administrador@gmail.com',
-  //     password: 'admin1234'
-  //   });
-  //   this.username = 'administrador@gmail.com';
-  //   this.password = 'admin1234';
-  // }
-
-  // espeLoading():void {
-  //   this.loginForm.patchValue({
-  //     username: 'especialista@gmail.com',
-  //     password: 'espe1234'
-  //   });
-  //   this.username = 'especialista@gmail.com';
-  //   this.password = 'espe1234';
-  // }
-
-  // paciLoading():void {
-  //   this.loginForm.patchValue({
-  //     username: 'paciente@gmail.com',
-  //     password: 'paci1234'
-  //   });
-  //   this.username = 'paciente@gmail.com';
-  //   this.password = 'paci1234';
-  // }
+  selectUser(user: UserLogData): void {
+    this.username = user.email;
+    this.contra = user.password;
+    this.loginForm.patchValue({
+          email: this.username,
+          password: this.contra
+    });
+    console.log(this.username, this.contra);
+  }
 
   goinit():void {
     this.router.navigate(['/welcome']);
   }
 
-  //w5b3g.test@inbox.testmail.app
-  //test1234
-  // especialista
   
 }

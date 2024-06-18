@@ -53,6 +53,16 @@ height: calc(100% - 73px);
     right: 16px;
   }
 
+.iconos {
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+}
+
+.colorButton {
+    background-color:#285E96;
+}
+
 @media (max-width: 450px) {
 .h-custom {
 height: 50%;

@@ -7,6 +7,8 @@ import { Administrador } from '../models/Administrador';
 import { Especialista } from '../models/Especialista';
 import { Paciente } from '../models/Paciente';
 import { UsuarioDto } from '../models/UsuarioDto';
+import { UserLogData } from '../models/UserLogData';
+
 
 @Injectable({
   providedIn: 'root'
@@ -178,6 +180,26 @@ async agregarAdministrador(administrador: Administrador): Promise<void> {
       console.error('El estado no pudo ser actualizado:', error);
       throw error;
     }
+  }
+
+  getFilteredData(path: string, emails: string[]): Observable<UserLogData[]> {
+    const collectionRef = collection(this.firestore, path);
+    const q = query(collectionRef, where('email', 'in', emails));
+
+    return from(getDocs(q)).pipe(
+      map(querySnapshot => 
+        querySnapshot.docs.map(doc => {
+          const data = doc.data() as UserLogData;
+          return {
+            nombre: data.nombre,
+            email: data.email,
+            password: data.password,
+            foto: data.foto,
+            imagenUno : data.imagenUno
+          };
+        })
+      )
+    );
   }
 }
 

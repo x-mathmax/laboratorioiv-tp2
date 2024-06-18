@@ -1,0 +1,31 @@
+<div class="containerTotal">
+    <div class="filtros">
+        <input type="text" placeholder="Filtrar por especialidad" (input)="onEspecialidadFilterChange($event)">
+        <input type="text" placeholder="Filtrar por especialista" (input)="onEspecialistaFilterChange($event)">
+    </div>
+  
+  <table>
+    <thead>
+      <tr>
+        <th>Especialidad</th>
+        <th>Especialista</th>
+        <th>Fecha</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let turno of filteredTurnos">
+        <td>{{ turno.especialidad }}</td>
+        <td>{{ turno.especialista }}</td>
+        <td>{{ turno.fecha.toDate() | date:'dd/MM/yyyy HH:mm' }}</td>
+        <td [ngClass]="{'bold': true, 'large-text': true}">{{ turno.estado }}</td>
+        <td>
+          <button *ngIf="turno.estado === 'pendiente'" (click)="cancelarTurno(turno)">Cancelar</button>
+          <button *ngIf="turno.comentario" (click)="verComentario(turno)">Ver Comentario</button>
+          <button *ngIf="turno.estado === 'realizado' && turno.comentario" (click)="completarEncuesta(turno)">Completar Encuesta</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

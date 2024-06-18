@@ -29,52 +29,20 @@
             <div class="text-center text-lg-start mt-4 pt-2">
               <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-lg backgroundBlue"
                 style="padding-left: 2.5rem; padding-right: 2.5rem;" (click)="Login()">Iniciar Sesión</button>
-                <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-lg backgroundBlue"
-                style="padding-left: 2.5rem; padding-right: 2.5rem; margin-left: 2rem;">Administrador</button>
-            </div>
-            <div>
-                <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-lg backgroundBlue"
-                style="padding-left: 2.5rem; padding-right: 2.5rem; margin-left: 2rem;">Especialista</button>
-                <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-lg backgroundBlue"
-                style="padding-left: 2.5rem; padding-right: 2.5rem; margin-left: 2rem;">Paciente</button>
-            </div>
-
-            <div>
-
-            </div>
-  
+            </div> 
           </form>
         </div>
       </div>
     </div>
-    <div class="fab-container">
-      <button mat-fab color="primary" [matMenuTriggerFor]="menu" aria-label="FAB Menu">
+    <div class="fab-container" *ngIf="users$ | async as users">
+      <button mat-fab class="colorButton" [matMenuTriggerFor]="menu" aria-label="FAB Menu">
         <mat-icon>add</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
-        <button mat-menu-item>
-          <mat-icon>home</mat-icon>
-          <span>Paciente 1</span>
-        </button>
-        <button mat-menu-item>
-          <mat-icon>person</mat-icon>
-          <span>Paciente 2</span>
-        </button>
-        <button mat-menu-item>
-          <mat-icon>settings</mat-icon>
-          <span>Paciente 3</span>
-        </button>
-        <button mat-menu-item>
-          <mat-icon>info</mat-icon>
-          <span>Especialista 1</span>
-        </button>
-        <button mat-menu-item>
-          <mat-icon>help</mat-icon>
-          <span>Especialista 2</span>
-        </button>
-        <button mat-menu-item>
-          <mat-icon>exit_to_app</mat-icon>
-          <span>Administrador</span>
+        <button mat-menu-item *ngFor="let user of users" (click)="selectUser(user)">
+          <mat-icon><img class="iconos" *ngIf="user.foto" [src]="user.foto" alt="">
+            <img class="iconos" *ngIf="!user.foto" [src]="user.imagenUno" alt=""></mat-icon>
+          <span>{{ user.nombre }}</span>
         </button>
       </mat-menu>
     </div>
