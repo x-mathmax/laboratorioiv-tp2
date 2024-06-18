@@ -45,7 +45,7 @@ Ingreso para usuario Admin, que permite acceder al botón usuarios
 </p>
 Acciones dentro del botón usuarios
 
-<a href="" target="blank"><img align="center" src="https://firebasestorage.googleapis.com/v0/b/laboratorioiv-tp2.appspot.com/o/readmeImages%2FCaptura%20de%20pantalla%202024-06-18%20103801.png?alt=media&token=5361f0ff-d40b-4531-a5b2-dbfcc227075f" alt="" height="500" width="400" /></a>
+<a href="" target="blank"><img align="center" src="https://firebasestorage.googleapis.com/v0/b/laboratorioiv-tp2.appspot.com/o/readmeImages%2FCaptura%20de%20pantalla%202024-06-18%20103801.png?alt=media&token=5361f0ff-d40b-4531-a5b2-dbfcc227075f" alt="" height="400" width="600" /></a>
 </p>
 Visualización de tabla de usuarios con posibilidad de habilitar o deshabilitar los mismos
 
