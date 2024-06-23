@@ -25,6 +25,7 @@ export class AltaEspecialistasComponent implements OnInit{
   siteKey : string = '6LcscvUpAAAAAMrDsxFrU2VhCw9H01xGa3i7APtx';
   captchaResponse: string | undefined;
   captchaResolved: boolean = false;
+  especialidades : any[] = [];;
 
 
   constructor(
@@ -56,7 +57,15 @@ export class AltaEspecialistasComponent implements OnInit{
         this.form.get('otraEspecialidad')!.reset();
       }
     });
+    this.loadEspecialidades();
   }
+
+loadEspecialidades() {
+  this.firestoreService.getCollectionData('especialidades').subscribe((data: any[]) => {
+    this.especialidades = data.map(item => item.nombre);
+    console.log(this.especialidades);
+  });
+}
 
 
   get nombre() {
@@ -115,12 +124,30 @@ export class AltaEspecialistasComponent implements OnInit{
     this.mostrarOtraEspecialidad = selectElement.value === 'otra';
   }
 
+  // getSelectedSpecialty(): string {
+  //   const especialidad = this.form.get('especialidad')!.value;
+  //   if (especialidad === 'otra') {
+  //     return this.form.get('otraEspecialidad')!.value;
+  //   }
+  //   return especialidad;
+  // }
+
   getSelectedSpecialty(): string {
-    const especialidad = this.form.get('especialidad')!.value;
-    if (especialidad === 'otra') {
+    if (this.mostrarOtraEspecialidad) {
       return this.form.get('otraEspecialidad')!.value;
+    } else {
+      return this.form.get('especialidad')!.value;
     }
-    return especialidad;
+  }
+
+
+  
+  async validarEspecialidad(valor: string) {
+    if (!this.especialidades.includes(valor)) {
+      await this.firestoreService.agregarEspecialidad(valor);
+    } else {
+      console.log("especialidad ya registrada en fb.")
+    }
   }
 
   async cargarEspecialista(){
@@ -134,10 +161,10 @@ export class AltaEspecialistasComponent implements OnInit{
   
     if (this.form.valid && this.selectedFile) {
       try {
- 
         const primera = await this.cargarImagenYObtenerURL(this.selectedFile);
         const segunda = await this.auth.Register(this.especialistaAlta.mail, this.especialistaAlta.password);
-        const tercera = await this.firestoreService.agregarEspecialista(this.especialistaAlta)
+        const tercera = await this.validarEspecialidad(this.especialistaAlta.especialidad);
+        const cuarta = await this.firestoreService.agregarEspecialista(this.especialistaAlta)
   
         this.data.executePopUp('Especialista agregado exitosamente.');
         console.log('Especialista agregado exitosamente.');

@@ -33,18 +33,25 @@
     </header>
 
     <div class="container">
+      
+      <!-- <app-spinner [isLoading]="(loadingService.loading$ | async) ?? false"></app-spinner> -->
       <h1>Seleccione acción a realizar:</h1>
+      
       <div class="button-container">
+        
       <button data-mdb-button-init data-mdb-ripple-init class="btn btn-lg backgroundBlue"
       style="padding-left: 2.5rem; padding-right: 2.5rem;" (click)="mostrarUsuarios()">Ver usuarios</button>
+      
       <button data-mdb-button-init data-mdb-ripple-init class="btn btn-lg backgroundBlue"
       style="padding-left: 2.5rem; padding-right: 2.5rem;" (click)="mostrarAltaAdministrador()">Alta administrador</button>
       </div>
       <div class="form-container">
+        
       <ng-container *ngIf="componenteActivo === 'administrador'">
           <app-alta-administrador></app-alta-administrador>
       </ng-container>
       <ng-container *ngIf="componenteActivo === 'usuarios'">
+        
           <app-tabla-usuarios></app-tabla-usuarios>
       </ng-container>
       </div>

@@ -3,11 +3,12 @@ import { Router } from '@angular/router';
 import { TablaUsuariosComponent } from '../tabla-usuarios/tabla-usuarios.component';
 import { CommonModule } from '@angular/common';
 import { AltaAdministradorComponent } from '../alta-administrador/alta-administrador.component';
+import { SpinnerComponent } from '../spinner/spinner.component';
 
 @Component({
   selector: 'app-usuarios',
   standalone: true,
-  imports: [TablaUsuariosComponent, CommonModule, AltaAdministradorComponent],
+  imports: [TablaUsuariosComponent, CommonModule, AltaAdministradorComponent, SpinnerComponent],
   templateUrl: './usuarios.component.html',
   styleUrl: './usuarios.component.css'
 })

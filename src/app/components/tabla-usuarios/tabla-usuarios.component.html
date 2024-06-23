@@ -1,3 +1,6 @@
+<!-- <app-spinner #loader class="oculto"></app-spinner> -->
+
+<app-spinner *ngIf="loading"></app-spinner>
 <table>
     <thead>
       <tr>
@@ -7,6 +10,7 @@
         <th>Email</th>
         <th>Tipo</th>
         <th>Estado</th>
+        <th>Acción</th>
       </tr>
     </thead>
     <tbody>

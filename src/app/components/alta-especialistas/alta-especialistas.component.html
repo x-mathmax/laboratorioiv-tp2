@@ -46,9 +46,7 @@
                 <div data-mdb-input-init class="form-outline form-white mb-4">
                   <label for="especialidad">Selecciona tu especialidad:</label>
                   <select id="especialidad" formControlName="especialidad" (change)="onEspecialidadChange($event)">
-                      <option value="medicina">Gastroenterología</option>
-                      <option value="ingenieria">Oftalmología</option>
-                      <option value="derecho">Clínica médica</option>
+                    <option *ngFor="let esp of especialidades" [value]="esp">{{ esp }}</option>
                       <option value="otra">Otra</option>
                   </select>
       

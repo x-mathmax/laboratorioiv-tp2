@@ -1,21 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { FirestoreService } from '../../services/firestore.service';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { UsuarioDto } from '../../models/UsuarioDto';
+import { SpinnerComponent } from '../spinner/spinner.component';
+
 
 @Component({
   selector: 'app-tabla-usuarios',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, SpinnerComponent],
   templateUrl: './tabla-usuarios.component.html',
-  styleUrl: './tabla-usuarios.component.css'
+  styleUrls: ['./tabla-usuarios.component.css']
 })
-export class TablaUsuariosComponent{
-  users$: Observable<any[]>;
+export class TablaUsuariosComponent implements AfterViewInit{
+  users$!: Observable<any[]>;
+  loading: boolean = false;
 
-  constructor(private firestoreService: FirestoreService) {
-    this.users$ = this.firestoreService.getUsersForTable();
+  constructor(private firestoreService: FirestoreService, private cdr: ChangeDetectorRef) {
+    
+  }
+
+  ngAfterViewInit() {
+    this.fetchData();
+    this.cdr.detectChanges();
+    
   }
 
   async onToggleHabilitado(user: UsuarioDto): Promise<void> {
@@ -30,7 +39,31 @@ export class TablaUsuariosComponent{
     }
   }
 
-  // ngOnInit(): void {
+  //validar que funcione ok el spinner porque no lo muestra porque carga rapido
+  // fetchData() {
+  //   this.loader.mostrar();
   //   this.users$ = this.firestoreService.getUsersForTable();
+  //   if (this.users$ != null) {
+  //     this.loader.ocultar();
+  //     console.log(this.users$);
+  //   }
   // }
+
+  fetchData() {
+    this.loading = true;
+    this.users$ = this.firestoreService.getUsersForTable();
+    this.users$.subscribe({
+      next: (users) => {
+        console.log(users);
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error fetching users:', err);
+        this.loading = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
 }
+

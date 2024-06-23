@@ -44,10 +44,6 @@ export class TurnosPacienteComponent implements OnInit {
     this.applyFilters();
   }
 
-  // onEspecialistaFilterChange(value: string): void {
-  //   this.especialistaFilter = value;
-  //   this.applyFilters();
-  // }
 
   onEspecialistaFilterChange(event: Event): void {
     const inputElement = event.target as HTMLInputElement;

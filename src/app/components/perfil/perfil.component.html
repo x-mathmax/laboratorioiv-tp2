@@ -27,6 +27,7 @@
 
     <div class="container">
         <div *ngIf="perfilData">
+          <div *ngIf="tipoUser === 'paciente'" class="perfil-container">
             <h1>Mi perfil ~</h1>
             <p><img class="fotoPerfil" *ngIf="perfilData.imagenUno" [src]="perfilData.imagenUno" alt=""><img class="fotoPerfil" *ngIf="perfilData.imagenDos" [src]="perfilData.imagenDos" alt=""></p>
             <p><strong>Nombre:</strong> {{ perfilData.nombre }}</p>
@@ -34,10 +35,21 @@
             <p><strong>Email:</strong> {{ perfilData.mail }}</p>
             <p><strong>Dni:</strong> {{ perfilData.dni }}</p>
             <p><strong>Obra Social:</strong> {{ perfilData.obraSocial }}</p>
+          </div>
 
+          <div *ngIf="tipoUser === 'especialista'" class="perfil-container">
+            <h1>Mi perfil ~</h1>
+            <p><img class="fotoPerfil" *ngIf="perfilData.foto" [src]="perfilData.foto" alt=""></p>
+            <p><strong>Nombre:</strong> {{ perfilData.nombre }}</p>
+            <p><strong>Apellido:</strong> {{ perfilData.apellido }}</p>
+            <p><strong>Email:</strong> {{ perfilData.mail }}</p>
+            <p><strong>Dni:</strong> {{ perfilData.dni }}</p>
+            <p><strong>Especialidad/es:</strong> {{ perfilData.especialidad }}</p>
           </div>
-          <div *ngIf="!perfilData">
+
+        </div>
+          <!-- <div *ngIf="!perfilData">
             <p>Cargando datos del perfil...</p>
-          </div>
+          </div> -->
   </div>
 </body>

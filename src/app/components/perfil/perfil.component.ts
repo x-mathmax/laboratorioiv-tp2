@@ -14,6 +14,7 @@ import { DataService } from '../../services/data.service';
 export class PerfilComponent implements OnInit {
   usuario: string;
   perfilData: any;
+  tipoUser!: string;
 
   constructor(private router: Router, private firestoreService : FirestoreService, private data: DataService){
     this.usuario = this.usuario = this.data.getItem('username');
@@ -37,6 +38,7 @@ export class PerfilComponent implements OnInit {
     .then(data => {
       console.log("Datos de perfil:",data);
       this.perfilData = data;
+      this.tipoUser = data.tipoUser;
     })
     .catch(error => {
       console.error("Error:", error);

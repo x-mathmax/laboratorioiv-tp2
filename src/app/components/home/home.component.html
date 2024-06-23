@@ -43,4 +43,42 @@
             </div>
         </nav>
     </header>
+
+    <!-- cards -->
+  <div class="container mt-5 ">
+    <div class="row containerCards">
+      <div *ngIf="tipoUser === 'administrador'" class="card text-white col-md-6 mb-6 sizeCards" (click)="goUsuarios()">
+        <img src="https://cdn.pixabay.com/photo/2016/04/15/18/05/computer-1331579_640.png" class="card-img" alt="...">
+        <div class="card-img-overlay">
+          <h5 class="card-title text-center customCardTitles">Usuarios</h5>
+        </div>
+      </div>
+      <div *ngIf="tipoUser === 'administrador'" class="card text-white col-md-6 mb-6 sizeCards" (click)="goTurnos()">
+        <img src="https://diarioenfermero.es/wp-content/uploads/2020/01/variedad-objetos-que-muestran-tiempo_52683-22973-e1580220219388.jpg" class="card-img" alt="...">
+        <div class="card-img-overlay" >
+          <h5 class="card-title text-center customCardTitles">Turnos</h5>  
+        </div>
+      </div>
+      <div *ngIf="tipoUser !== 'administrador'" class="card text-white col-md-6 mb-6 sizeCards" (click)="goTurnos()">
+        <img src="https://diarioenfermero.es/wp-content/uploads/2020/01/variedad-objetos-que-muestran-tiempo_52683-22973-e1580220219388.jpg" class="card-img" alt="...">
+        <div class="card-img-overlay" >
+          <h5 class="card-title text-center customCardTitles">Mis turnos</h5>  
+        </div>
+      </div>
+    </div>
+    <div class="row containerCards">
+      <div *ngIf="tipoUser === 'administrador' || tipoUser === 'paciente'" class="card text-white col-md-6 mb-6 sizeCards">
+        <img src="https://png.pngtree.com/png-clipart/20220719/original/pngtree-calendar-with-selected-date-png-image_8382123.png" class="card-img" alt="...">
+        <div class="card-img-overlay">
+          <h5 class="card-title text-center customCardTitles">Solicitar turno</h5>
+        </div>
+      </div>
+      <div *ngIf="tipoUser === 'especialista' || tipoUser === 'paciente'" class="card text-white col-md-6 mb-6 sizeCards"(click)="goPerfil()">
+        <img src="https://cdn-icons-png.flaticon.com/256/9634/9634092.png" class="card-img" alt="...">
+        <div class="card-img-overlay">
+          <h5 class="card-title text-center customCardTitles">Mi perfil</h5>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>

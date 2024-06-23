@@ -8,6 +8,7 @@ import { Especialista } from '../models/Especialista';
 import { Paciente } from '../models/Paciente';
 import { UsuarioDto } from '../models/UsuarioDto';
 import { UserLogData } from '../models/UserLogData';
+import { PerfilDto } from '../models/PerfilDto';
 
 
 @Injectable({
@@ -88,12 +89,14 @@ async agregarAdministrador(administrador: Administrador): Promise<void> {
     }
   }
 
-  async getAndSaveInfoUserByEmail(email: string): Promise<Paciente> {
+  //modificado de paciente a infouser para perfil
+  async getAndSaveInfoUserByEmail(email: string): Promise<PerfilDto> {
     try {
       const data = await firstValueFrom(this.getDocDataByEmail(email).pipe(first()));
       if (data) {
-        const paciente = new Paciente(data.nombre, data.apellido, data.edad, data.dni, data.email, data.password, data.tipoUser, data.obraSocial, data.imagenUno, data.imagenDos);
-        return paciente;
+        const datosPerfil = new PerfilDto(data.nombre, data.apellido, data.edad, data.dni, data.email, data.password, data.tipoUser, data.habilitado, data.especialidad,
+          data.foto, data.obraSocial, data.imagenUno, data.imagenDos);
+        return datosPerfil;
       } else {
         throw new Error('Usuario no encontrado');
       }
@@ -102,22 +105,6 @@ async agregarAdministrador(administrador: Administrador): Promise<void> {
       throw error;
     }
   }
-
-  // async getAndSaveTipoUserAndStatusByEmail(email: string): Promise<{ tipoUser: string, habilitado: boolean }> {
-  //   try {
-  //     const data = await firstValueFrom(this.getDocDataByEmail(email).pipe(first()));
-  //     if (data) {
-  //       const tipoUser = data.tipoUser; 
-  //       const habilitado = data.habilitado;
-  //       return { tipoUser, habilitado };
-  //     } else {
-  //       throw new Error('Usuario no encontrado');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error al obtener el tipo de usuario:', error);
-  //     throw error;
-  //   }
-  // }
 
   async getAndSaveTipoUserAndStatusByEmail(email: string): Promise<{ tipoUser: string, habilitado: boolean }> {
     return new Promise<{ tipoUser: string, habilitado: boolean }>(async (resolve, reject) => {
@@ -173,10 +160,6 @@ async agregarAdministrador(administrador: Administrador): Promise<void> {
     return collectionData(c, { idField: 'id' }) as Observable<UsuarioDto[]>;
   }
 
-  // toggleUserHabilitado(userId: string, newValue: boolean): Promise<void> {
-  //   const userRef = this.firestore.collection('usuarios').doc(userId);
-  //   return userRef.set({ habilitado: newValue }, { merge: true });
-  // }
 
   async toggleUserHabilitado(userMail: string, newValue: boolean) {
     try {
@@ -215,6 +198,21 @@ async agregarAdministrador(administrador: Administrador): Promise<void> {
         })
       )
     );
+  }
+
+  async agregarEspecialidad(especialidad: string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      let c = collection(this.firestore, 'especialidades');
+      addDoc(c, {
+        nombre : especialidad
+      }).then(() => {
+        console.log('Especialidad agregada exitosamente en Firestore.');
+        resolve(); 
+      }).catch((error) => {
+        console.error('No se pudo agregar la especialidad. Error: ', error);
+        reject(error);
+      });
+    });
   }
 }
 
