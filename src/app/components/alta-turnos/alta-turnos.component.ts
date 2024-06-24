@@ -37,6 +37,7 @@ export class AltaTurnosComponent implements AfterViewInit {
   especialidades$!: Observable<any[]>;
   especialidadesConFoto: any[] = [];
   especialidadesArray: Especialidad[] = [];
+  fechaTurnoFormateada: any;
 
   constructor(private firestoreService : FirestoreService, private cdr: ChangeDetectorRef, private data: DataService, private router: Router){
     this.selectedValueHora = '';
@@ -153,7 +154,7 @@ export class AltaTurnosComponent implements AfterViewInit {
   seleccionarFechaHora(fecha:string, hora: string) {
     console.log('Turno seleccionado:', fecha, hora);
     this.selectedTurno = { fecha, hora };
-    this.turnoAlta.fecha = fecha.toString();
+    this.turnoAlta.fecha = this.conviertoParaFormatearFecha(fecha);
     this.turnoAlta.horario = hora.toString();
     this.etapa = 3;
   }
@@ -202,5 +203,18 @@ export class AltaTurnosComponent implements AfterViewInit {
   
   padNumber(num: number): string {
     return num < 10 ? '0' + num : num.toString();
+  }
+
+  formatearFechaYYYYMMDDParaBD(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Los meses en JavaScript son 0-11
+    const day = String(date.getDate()).padStart(2, '0');
+  
+    return `${year}-${month}-${day}`;
+  }
+
+  conviertoParaFormatearFecha(dateString: string): string {
+    const date = new Date(dateString);
+    return this.formatearFechaYYYYMMDDParaBD(date);
   }
 }

@@ -34,6 +34,7 @@
           <th>Especialidad</th>
           <th>Especialista</th>
           <th>Fecha</th>
+          <th>Hora</th>
           <th>Estado</th>
           <th>Acciones</th>
         </tr>
@@ -42,7 +43,8 @@
         <tr *ngFor="let turno of filteredTurnos">
           <td>{{ turno.especialidad }}</td>
           <td>{{ turno.especialista }}</td>
-          <td>{{ turno.fecha.toDate() | date:'dd/MM/yyyy HH:mm' }}</td>
+          <td>{{ turno.fecha}}</td>
+          <td>{{ turno.horario}}</td>
           <td [ngClass]="{'bold': true, 'large-text': true}">{{ turno.estado }}</td>
           <td>
             <button *ngIf="turno.estado === 'pendiente'" (click)="cancelarTurno(turno)">Cancelar</button>

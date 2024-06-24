@@ -299,7 +299,7 @@ async agregarAdministrador(administrador: Administrador): Promise<void> {
 
   async agregarTurno(turno: Turno): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      let c = collection(this.firestore, 'usuarios');
+      let c = collection(this.firestore, 'turnos');
       addDoc(c, {
         paciente : turno.paciente, 
         especialista: turno.especialista, 

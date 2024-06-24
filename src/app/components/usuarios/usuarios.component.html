@@ -17,6 +17,10 @@
                           <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-md text-white backgroundBlue"
                           (click)="goHome()">Volver</button>
                         </li>
+                        <li class="nav-item" >
+                          <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-md text-white backgroundBlue"
+                          (click)="generarExcel()">Generar Excel</button>
+                        </li>
                         <!-- <li class="nav-item" >
                           <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-md text-white backgroundBlue"
                           >Sala de chat</button>
@@ -44,15 +48,26 @@
       
       <button data-mdb-button-init data-mdb-ripple-init class="btn btn-lg backgroundBlue"
       style="padding-left: 2.5rem; padding-right: 2.5rem;" (click)="mostrarAltaAdministrador()">Alta administrador</button>
+
+      <button data-mdb-button-init data-mdb-ripple-init class="btn btn-lg backgroundBlue"
+      style="padding-left: 2.5rem; padding-right: 2.5rem;" (click)="mostrarAltaPaciente()">Alta paciente</button>
+
+      <button data-mdb-button-init data-mdb-ripple-init class="btn btn-lg backgroundBlue"
+      style="padding-left: 2.5rem; padding-right: 2.5rem;" (click)="mostrarAltaEspecialista()">Alta especialista</button>
       </div>
       <div class="form-container">
         
       <ng-container *ngIf="componenteActivo === 'administrador'">
           <app-alta-administrador></app-alta-administrador>
       </ng-container>
-      <ng-container *ngIf="componenteActivo === 'usuarios'">
-        
+      <ng-container *ngIf="componenteActivo === 'usuarios'">  
           <app-tabla-usuarios></app-tabla-usuarios>
+      </ng-container>
+      <ng-container *ngIf="componenteActivo === 'paciente'">  
+          <app-alta-pacientes></app-alta-pacientes>
+      </ng-container>
+      <ng-container *ngIf="componenteActivo === 'especialista'">  
+          <app-alta-especialistas></app-alta-especialistas>
       </ng-container>
       </div>
   </div>
