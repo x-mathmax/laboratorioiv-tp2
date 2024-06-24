@@ -5,9 +5,9 @@ export class Paciente extends Usuario{
     imagenUno: string;
     imagenDos: string;
   
-    constructor(nombre: string, apellido: string, edad:number, dni: number, mail: string, password: string, tipoUser:string,
+    constructor(nombre: string, apellido: string, edad:number, dni: number, email: string, password: string, tipoUser:string,
         obraSocial: string, imagenUno:string, imagenDos: string) {
-        super(nombre, apellido, edad, dni, mail, password, tipoUser)
+        super(nombre, apellido, edad, dni, email, password, tipoUser)
         this.obraSocial = obraSocial;
         this.imagenUno = imagenUno;
         this.imagenDos = imagenDos;  

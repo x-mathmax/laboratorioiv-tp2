@@ -37,6 +37,7 @@ body {
     width: 150px;
     height: 150px;  
     margin-left: 15px;
+    border-radius: 70px;
 }
  
 .footer {

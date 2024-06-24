@@ -126,7 +126,7 @@ export class AltaPacientesComponent implements OnInit{
       this.pacienteAlta.edad = this.form.get('edad')?.value;
       this.pacienteAlta.dni = this.form.get('dni')?.value;
       this.pacienteAlta.obraSocial = this.form.get('obraSocial')?.value;
-      this.pacienteAlta.mail = this.form.get('email')?.value;
+      this.pacienteAlta.email = this.form.get('email')?.value;
       this.pacienteAlta.password = this.form.get('password')?.value;
 
 
@@ -136,12 +136,12 @@ export class AltaPacientesComponent implements OnInit{
             console.log("fotoDos", this.selectedFileTwo);
             console.log("forms", this.form.valid);
             const primera = await this.cargarImagenesYObtenerURL(this.selectedFile, this.selectedFileTwo);
-            const segunda = await this.auth.Register(this.pacienteAlta.mail, this.pacienteAlta.password);
+            const segunda = await this.auth.Register(this.pacienteAlta.email, this.pacienteAlta.password);
             const tercera = await this.firestoreService.agregarPaciente(this.pacienteAlta);
             
             this.data.executePopUp('Paciente agregado exitosamente.');
 
-            console.log('Paciente agregado exitosamente.');
+            // console.log('Paciente agregado exitosamente.');
             this.form.reset();
           } catch (error) {
             console.error('Error al cargar paciente:', error);

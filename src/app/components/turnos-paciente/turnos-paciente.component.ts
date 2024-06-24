@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FirestoreService } from '../../services/firestore.service';
 import { Turno } from '../../models/Turno';
 import { CommonModule} from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-turnos-paciente',
@@ -18,9 +19,9 @@ export class TurnosPacienteComponent implements OnInit {
   turno : Turno;
   hora : any;
 
-  constructor(private firestoreService: FirestoreService) {
+  constructor(private firestoreService: FirestoreService, private router: Router) {
     this.hora = new Date(2024, 0, 1, 0, 0, 0, 0);
-    this.turno = new Turno('', '', '', '', '', '', '', '', this.hora);
+    this.turno = new Turno('', '', '', '', '', '', '', '', this.hora, '', '');
     
    }
 
@@ -58,5 +59,9 @@ export class TurnosPacienteComponent implements OnInit {
   }
 
   verComentario(turno : Turno) : void {
+  }
+
+  volver() :void{
+    this.router.navigate(['/home']);
   }
 }

@@ -1,0 +1,79 @@
+<body>
+  <header>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+          <img id="logo" src="../../../assets/logo.png" alt="logo sanatorio" >
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
+            <span class="navbar-text">
+                <ul class="navbar-nav">
+                    <li class="nav-item">                    
+                      <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-md text-white backgroundBlue"
+                      (click)="volver()">Volver</button>
+                    </li>
+                  </ul>
+            </span>
+          </div>
+        </div>
+    </nav>
+</header>
+<div class="contenedorTotal">
+  <app-spinner *ngIf="loading"></app-spinner>
+  <!-- especialistas -->
+  <h3 class="tituloEspecialista">Seleccione un especialista</h3>
+  <div class="especialistas">
+    
+    <div *ngFor="let especialista of especialistas$ | async">
+        <button class="especialistas" (click)="seleccionarEspecialista(especialista)">
+        <div>{{ especialista.nombre }} {{ especialista.apellido }}</div>
+        <img [src]="especialista.foto" alt="Foto de {{ especialista.nombre }} {{ especialista.apellido }}">
+        </button>
+    </div>
+  </div>
+  <!-- especialidades -->
+  <div class="especialidades">
+    <div *ngIf="especialidades.length > 0">
+        <h4>Especialidades:</h4>
+        <div class="especialidad-container">
+        <div *ngFor="let especialidad of especialidadesConFoto" class="especialidad">
+          <span class="nombre-especialidad">{{ especialidad.nombre }}</span>
+          <button class="especialidad" (click)="seleccionarEspecialidad(especialidad.nombre)">
+
+            <img *ngIf="especialidad.imagen" [src]="especialidad.imagen" alt="Foto de {{ especialidad.nombre }}">
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- turnos -->
+  <div class="horarios">
+    <!-- <div *ngIf="turnosDisponibles.length > 0"> -->
+      <div *ngIf="etapa === 2">
+        <h3>Días y Horarios Disponibles</h3>
+        <div class="turnos-container">
+          <div class="turno" *ngFor="let turno of turnosDisponibles">
+            <button class="fechaHora" (click)="seleccionarFechaHora(turno.fecha, turno.hora)">{{ turno.fecha | date:'yyyy-MM-dd' }} {{ formatTimeTo12Hour(turno.hora) }}</button>      
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="confirmacion">
+    <div *ngIf="etapa === 3">
+      <button class="seleccionado" style="padding-left: 2.5rem; padding-right: 2.5rem;" disabled>
+        {{ selectedTurno!.fecha | date:'yyyy-MM-dd' }} {{ formatTimeTo12Hour(selectedTurno!.hora) }}</button>
+      <div>
+        <button data-mdb-button-init data-mdb-ripple-init class="btn btn-md backgroundBlue"
+          style="padding-left: 2.5rem; padding-right: 2.5rem;" (click)="confirmarTurno()">Confirmar turno</button>
+          <button data-mdb-button-init data-mdb-ripple-init class="btn btn-md backgroundBlue"
+          style="padding-left: 2.5rem; padding-right: 2.5rem;" (click)="cancelarTurno()">Cancelar</button>
+      </div>
+      
+    </div>
+  </div>
+</div>
+</body>

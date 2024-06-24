@@ -19,15 +19,15 @@
                         </li>
                         <li class="nav-item" >
                           <button *ngIf="tipoUser !== 'administrador'" type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-md text-white backgroundBlue"
-                          (click)="goTurnos()">Mis turnos</button>
+                          (click)="goTurnosEsp()">Mis turnos</button>
                         </li>
                         <li class="nav-item" >
                           <button *ngIf="tipoUser === 'administrador'" type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-md text-white backgroundBlue"
-                          >Turnos</button>
+                          (click)="goTurnosAdm()">Turnos</button>
                         </li>
                         <li class="nav-item" >
                           <button *ngIf="tipoUser === 'administrador' || tipoUser === 'paciente'" type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-md text-white backgroundBlue"
-                          >Solicitar turno</button>
+                          (click)="sacarTurno()">Solicitar turno</button>
                         </li>
                         <li class="nav-item" >
                           <button *ngIf="tipoUser === 'especialista' || tipoUser === 'paciente'" type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-md text-white backgroundBlue"
@@ -53,13 +53,19 @@
           <h5 class="card-title text-center customCardTitles">Usuarios</h5>
         </div>
       </div>
-      <div *ngIf="tipoUser === 'administrador'" class="card text-white col-md-6 mb-6 sizeCards" (click)="goTurnos()">
+      <div *ngIf="tipoUser === 'administrador'" class="card text-white col-md-6 mb-6 sizeCards" (click)="goTurnosAdm()">
         <img src="https://diarioenfermero.es/wp-content/uploads/2020/01/variedad-objetos-que-muestran-tiempo_52683-22973-e1580220219388.jpg" class="card-img" alt="...">
         <div class="card-img-overlay" >
           <h5 class="card-title text-center customCardTitles">Turnos</h5>  
         </div>
       </div>
-      <div *ngIf="tipoUser !== 'administrador'" class="card text-white col-md-6 mb-6 sizeCards" (click)="goTurnos()">
+      <div *ngIf="tipoUser === 'especialista'" class="card text-white col-md-6 mb-6 sizeCards" (click)="goTurnosEsp()">
+        <img src="https://diarioenfermero.es/wp-content/uploads/2020/01/variedad-objetos-que-muestran-tiempo_52683-22973-e1580220219388.jpg" class="card-img" alt="...">
+        <div class="card-img-overlay" >
+          <h5 class="card-title text-center customCardTitles">Mis turnos</h5>  
+        </div>
+      </div>
+      <div *ngIf="tipoUser === 'paciente'" class="card text-white col-md-6 mb-6 sizeCards" (click)="goTurnosPac()">
         <img src="https://diarioenfermero.es/wp-content/uploads/2020/01/variedad-objetos-que-muestran-tiempo_52683-22973-e1580220219388.jpg" class="card-img" alt="...">
         <div class="card-img-overlay" >
           <h5 class="card-title text-center customCardTitles">Mis turnos</h5>  

@@ -2,11 +2,9 @@ import { Usuario } from "./Usuario";
 
 export class UsuarioDto extends Usuario{
     habilitado: boolean;
-    email : string;
   
     constructor(nombre: string, apellido: string, edad:number, dni: number, mail: string, password: string, tipoUser:string, habilitado: boolean, email : string) {
         super(nombre, apellido, edad, dni, mail, password, tipoUser) 
         this.habilitado = habilitado;
-        this.email = email;
     }
 }

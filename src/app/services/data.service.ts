@@ -43,4 +43,8 @@ export class DataService {
       confirmButtonText: 'Aceptar'
     });
   }
+
+  separoString(input: string): string[] {
+    return input.split(',').map(campo => campo.trim());
+  }
 }

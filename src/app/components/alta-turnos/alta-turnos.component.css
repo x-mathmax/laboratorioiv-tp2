@@ -1,0 +1,204 @@
+.divider:after,
+.divider:before {
+content: "";
+flex: 1;
+height: 1px;
+background: #000;
+}
+.h-custom {
+height: calc(100% - 73px);
+}
+
+.currentUser {
+    color: #0A056B;
+}
+
+.backgroundBlue {
+    background-color: #285E96;
+    color: white;  
+    margin-left: 10px;
+}
+
+.backgroundBlue:hover {
+    background-color: #0A056B;
+}
+
+body {
+  background: url('../../../assets/allBackground.jpg') no-repeat center center fixed;
+  background-size: cover;
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+
+}
+
+#logo {
+  width: 150px;
+  height: 150px;  
+  margin-left: 15px;
+  border-radius: 70px;
+}
+
+.contedorTotal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.especialistas,
+.tituloEspecialista {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px
+}
+
+
+.especialistas button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 150px;
+  height: 150px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+}
+
+.especialistas button img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.especialistas button div {
+  position: relative;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  padding: 5px;
+  text-align: center;
+  width: 100%;
+}
+
+
+.especialidades {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.especialidad-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.especialidad {
+  flex: 1 1 200px;
+  max-width: 300px;
+}
+
+.especialidad button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  height: 200px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  background-color: #f0f0f0;
+}
+
+.especialidad button img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.nombre-especialidad {
+  margin-top: 10px;
+  padding: 0 10px;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.especialidad button:hover {
+  background-color: #e0e0e0;
+}
+
+.horarios {
+  display: flex;
+  justify-content: center;
+}
+
+.turnos-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+
+.turno {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fechaHora {
+  width: 100px;
+  height: 100px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.fechaHora:hover {
+  background-color: green;
+}
+
+.seleccionado {
+  background-color: green;
+  color: white;
+}
+
+.confirmacion {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px; /* Espacio superior para separación */
+}
+
+.confirmacion .seleccionado {
+  margin-bottom: 20px; /* Espacio inferior para separar del siguiente botón */
+}
+
+.confirmacion div {
+  display: flex;
+  gap: 10px; /* Espacio entre los botones */
+  justify-content: center;
+}

@@ -42,11 +42,23 @@ export class HomeComponent implements OnInit{
     this.router.navigate(['/welcome']);
   }
 
-  goTurnos():void {
-    this.router.navigate(['/turnos']);
+  goTurnosAdm():void {
+    this.router.navigate(['/turnos/administrador']);
   } 
 
   goPerfil():void {
     this.router.navigate(['/perfil']);
+  }
+  
+  goTurnosEsp():void {
+    this.router.navigate(['/turnos/especialista']);
+  } 
+
+  goTurnosPac():void {
+    this.router.navigate(['/turnos/paciente']);
+  } 
+
+  sacarTurno():void {
+    this.router.navigate(['/turnos/nuevo']);
   } 
 }

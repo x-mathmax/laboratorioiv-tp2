@@ -1,31 +1,56 @@
-<div class="containerTotal">
-    <div class="filtros">
-        <input type="text" placeholder="Filtrar por especialidad" (input)="onEspecialidadFilterChange($event)">
-        <input type="text" placeholder="Filtrar por especialista" (input)="onEspecialistaFilterChange($event)">
-    </div>
-  
-  <table>
-    <thead>
-      <tr>
-        <th>Especialidad</th>
-        <th>Especialista</th>
-        <th>Fecha</th>
-        <th>Estado</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let turno of filteredTurnos">
-        <td>{{ turno.especialidad }}</td>
-        <td>{{ turno.especialista }}</td>
-        <td>{{ turno.fecha.toDate() | date:'dd/MM/yyyy HH:mm' }}</td>
-        <td [ngClass]="{'bold': true, 'large-text': true}">{{ turno.estado }}</td>
-        <td>
-          <button *ngIf="turno.estado === 'pendiente'" (click)="cancelarTurno(turno)">Cancelar</button>
-          <button *ngIf="turno.comentario" (click)="verComentario(turno)">Ver Comentario</button>
-          <button *ngIf="turno.estado === 'realizado' && turno.comentario" (click)="completarEncuesta(turno)">Completar Encuesta</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+<body>
+  <header>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+          <img id="logo" src="../../../assets/logo.png" alt="logo sanatorio" >
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
+            <span class="navbar-text">
+                <ul class="navbar-nav">
+                    <li class="nav-item">                    
+                      <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-md text-white backgroundBlue"
+                      (click)="volver()">Volver</button>
+                    </li>
+                  </ul>
+            </span>
+          </div>
+        </div>
+    </nav>
+</header>
+
+
+  <div class="containerTotal">
+      <div class="filtros">
+          <input class="filtroIndividual" type="text" placeholder="Filtrar por especialidad" (input)="onEspecialidadFilterChange($event)">
+          <input class="filtroIndividual" type="text" placeholder="Filtrar por especialista" (input)="onEspecialistaFilterChange($event)">
+      </div>
+    
+    <table>
+      <thead>
+        <tr>
+          <th>Especialidad</th>
+          <th>Especialista</th>
+          <th>Fecha</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let turno of filteredTurnos">
+          <td>{{ turno.especialidad }}</td>
+          <td>{{ turno.especialista }}</td>
+          <td>{{ turno.fecha.toDate() | date:'dd/MM/yyyy HH:mm' }}</td>
+          <td [ngClass]="{'bold': true, 'large-text': true}">{{ turno.estado }}</td>
+          <td>
+            <button *ngIf="turno.estado === 'pendiente'" (click)="cancelarTurno(turno)">Cancelar</button>
+            <button *ngIf="turno.comentario" (click)="verComentario(turno)">Ver Comentario</button>
+            <button *ngIf="turno.estado === 'realizado' && turno.comentario" (click)="completarEncuesta(turno)">Completar Encuesta</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>

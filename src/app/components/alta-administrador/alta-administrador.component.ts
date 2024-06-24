@@ -30,7 +30,7 @@ export class AltaAdministradorComponent implements OnInit {
     private auth: AuthService,
     private data: DataService
   ) {
-    this.administradorAlta = new Administrador('', '', 0, 0, '', '', '', '', '');
+    this.administradorAlta = new Administrador('', '', 0, 0, '', '', '', '');
     }
 
   ngOnInit(): void {
@@ -100,7 +100,7 @@ export class AltaAdministradorComponent implements OnInit {
     this.administradorAlta.apellido = this.form.get('apellido')?.value;
     this.administradorAlta.edad = this.form.get('edad')?.value;
     this.administradorAlta.dni = this.form.get('dni')?.value;
-    this.administradorAlta.mail = this.form.get('email')?.value;
+    this.administradorAlta.email = this.form.get('email')?.value;
     this.administradorAlta.password = this.form.get('password')?.value;
 
     if (this.form.valid && this.selectedFile) {
@@ -108,7 +108,7 @@ export class AltaAdministradorComponent implements OnInit {
           const primera = await this.cargarImagenYObtenerURL(this.selectedFile);
 
           //agrego el alta en el auth además de en la base de datos.
-          const segunda = await this.auth.Register(this.administradorAlta.mail, this.administradorAlta.password);
+          const segunda = await this.auth.Register(this.administradorAlta.email, this.administradorAlta.password);
 
           const tercera = await this.firestoreService.agregarAdministrador(this.administradorAlta);
 

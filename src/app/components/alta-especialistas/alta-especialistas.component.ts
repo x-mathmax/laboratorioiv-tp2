@@ -35,7 +35,7 @@ export class AltaEspecialistasComponent implements OnInit{
     private auth: AuthService,
     private data: DataService
   ) {
-    this.especialistaAlta = new Especialista('', '', 0, 0, '', '', '', '', '',false);
+    this.especialistaAlta = new Especialista('', '', 0, 0, '', '', '', '', '',false, '', '', '');
     }
 
   ngOnInit(): void {
@@ -156,13 +156,13 @@ loadEspecialidades() {
     this.especialistaAlta.edad = this.form.get('edad')?.value;
     this.especialistaAlta.dni = this.form.get('dni')?.value;
     this.especialistaAlta.especialidad = this.getSelectedSpecialty();
-    this.especialistaAlta.mail = this.form.get('email')?.value;
+    this.especialistaAlta.email = this.form.get('email')?.value;
     this.especialistaAlta.password = this.form.get('password')?.value;
   
     if (this.form.valid && this.selectedFile) {
       try {
         const primera = await this.cargarImagenYObtenerURL(this.selectedFile);
-        const segunda = await this.auth.Register(this.especialistaAlta.mail, this.especialistaAlta.password);
+        const segunda = await this.auth.Register(this.especialistaAlta.email, this.especialistaAlta.password);
         const tercera = await this.validarEspecialidad(this.especialistaAlta.especialidad);
         const cuarta = await this.firestoreService.agregarEspecialista(this.especialistaAlta)
   

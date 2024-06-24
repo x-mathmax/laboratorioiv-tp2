@@ -12,8 +12,14 @@ export const routes: Routes = [
     loadComponent: () => import('./components/home/home.component').then(c => c.HomeComponent) },
     { path: 'usuarios',
     loadComponent: () => import('./components/usuarios/usuarios.component').then(c => c.UsuariosComponent) },
-    { path: 'turnos',
+    { path: 'turnos/administrador',
         loadComponent: () => import('./components/turnos/turnos.component').then(c => c.TurnosComponent) },
+    { path: 'turnos/especialista',
+        loadComponent: () => import('./components/turnos-especialista/turnos-especialista.component').then(c => c.TurnosEspecialistaComponent) },
+    { path: 'turnos/paciente',
+        loadComponent: () => import('./components/turnos-paciente/turnos-paciente.component').then(c => c.TurnosPacienteComponent) },
+    { path: 'turnos/nuevo',
+        loadComponent: () => import('./components/alta-turnos/alta-turnos.component').then(c => c.AltaTurnosComponent) },
     { path: 'perfil',
         loadComponent: () => import('./components/perfil/perfil.component').then(c => c.PerfilComponent) }
 ];

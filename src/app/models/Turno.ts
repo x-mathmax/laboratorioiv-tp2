@@ -7,12 +7,14 @@ export class Turno {
     diagnostico: string;
     reseña: string;
     estado: string;
-    calificacionEspecialista: string;
-    comentarioTurno: string;
-    fecha: Timestamp;
+    calificacionAtencion: string;
+    comentario: string;
+    fecha: string;
+    horario: string;
+    encuesta: string;  
   
     constructor(paciente: string, especialista: string, especialidad: string, diagnostico: string, reseña:string,
-        estado: string, calificacionEspecialista: string, comentarioTurno:string, fecha: Timestamp  
+        estado: string, calificacionAtencion: string, comentario:string, fecha: string, horario: string, encuesta: string 
     ) {
       this.paciente = paciente;
       this.especialista = especialista;
@@ -20,8 +22,10 @@ export class Turno {
       this.diagnostico = diagnostico;
       this.reseña = reseña;
       this.estado = estado;
-      this.calificacionEspecialista = calificacionEspecialista;
-      this.comentarioTurno = comentarioTurno;
+      this.calificacionAtencion = calificacionAtencion;
+      this.comentario = comentario;
       this.fecha = fecha;
+      this.horario = horario;
+      this.encuesta = encuesta;
     }
   }
