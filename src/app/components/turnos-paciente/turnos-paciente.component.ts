@@ -3,6 +3,7 @@ import { FirestoreService } from '../../services/firestore.service';
 import { Turno } from '../../models/Turno';
 import { CommonModule} from '@angular/common';
 import { Router } from '@angular/router';
+import { DataService } from '../../services/data.service';
 
 @Component({
   selector: 'app-turnos-paciente',
@@ -18,18 +19,24 @@ export class TurnosPacienteComponent implements OnInit {
   especialistaFilter: string = '';
   turno : Turno;
   hora : any;
+  userIn: string;
 
-  constructor(private firestoreService: FirestoreService, private router: Router) {
+  constructor(private firestoreService: FirestoreService, private router: Router, private data: DataService) {
     this.hora = new Date(2024, 0, 1, 0, 0, 0, 0);
     this.turno = new Turno('', '', '', '', '', '', '', '', this.hora, '', '');
-    
+    this.userIn = this.data.getItem('username');
    }
 
   ngOnInit(): void {
-    this.firestoreService.getCollectionData('turnos').subscribe(data => {
+    this.firestoreService.getTurnosPorPaciente(this.userIn).subscribe(data => {
       this.turnos = data;
+      console.log(this.turnos);
       this.applyFilters();
     });
+    // this.firestoreService.getCollectionData('turnos').subscribe(data => {
+    //   this.turnos = data;
+    //   this.applyFilters();
+    // });
   }
 
   applyFilters(): void {

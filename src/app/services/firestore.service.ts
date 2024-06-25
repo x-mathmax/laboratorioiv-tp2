@@ -275,6 +275,32 @@ async agregarAdministrador(administrador: Administrador): Promise<void> {
     );
   }
 
+  getTurnosPorPaciente(email: string): Observable<Turno[]> {
+    const usersRef = collection(this.firestore, 'turnos');
+    const q = query(usersRef, where('paciente', '==', email));
+    
+    return from(getDocs(q)).pipe(
+      map(querySnapshot => 
+        querySnapshot.docs.map(doc => {
+          const data = doc.data() as Turno;
+          return {
+            paciente: data.paciente,
+            especialista: data.especialista,
+            especialidad: data.especialidad,
+            diagnostico: data.diagnostico,
+            reseña: data.reseña,
+            estado: data.estado,
+            calificacionAtencion: data.calificacionAtencion,
+            comentario: data.comentario,
+            fecha: data.fecha,
+            horario: data.horario,
+            encuesta: data.encuesta,
+          };
+        })
+      )
+    );
+  }
+
   //modificar para agregar más especialidades correctamente a fb
   async modificarEspecialista(userMail: string, valorHoraEntrada: string, valorHoraSalida:string, especialidad: string) {
     try {

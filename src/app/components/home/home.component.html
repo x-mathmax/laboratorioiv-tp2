@@ -73,7 +73,7 @@
       </div>
     </div>
     <div class="row containerCards">
-      <div *ngIf="tipoUser === 'administrador' || tipoUser === 'paciente'" class="card text-white col-md-6 mb-6 sizeCards">
+      <div *ngIf="tipoUser === 'administrador' || tipoUser === 'paciente'" class="card text-white col-md-6 mb-6 sizeCards" (click)="sacarTurno()">
         <img src="https://png.pngtree.com/png-clipart/20220719/original/pngtree-calendar-with-selected-date-png-image_8382123.png" class="card-img" alt="...">
         <div class="card-img-overlay">
           <h5 class="card-title text-center customCardTitles">Solicitar turno</h5>
