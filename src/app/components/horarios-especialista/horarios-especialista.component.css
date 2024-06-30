@@ -1,0 +1,80 @@
+.divider:after,
+.divider:before {
+content: "";
+flex: 1;
+height: 1px;
+background: #000;
+}
+.h-custom {
+height: calc(100% - 73px);
+}
+
+.currentUser {
+    color: #0A056B;
+}
+
+.backgroundBlue {
+    background-color: #285E96;
+    color: white;  
+    margin-left: 10px;
+}
+
+.backgroundBlue:hover {
+    background-color: #0A056B;
+}
+
+body {
+    background: url('../../../assets/allBackground.jpg') no-repeat center center fixed;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow-x: hidden;
+}
+
+#logo {
+    width: 150px;
+    height: 150px;  
+    margin-left: 15px;
+    border-radius: 70px;
+}
+
+.containerTotal {
+    margin-top: 20px;
+}
+
+.filtros {
+    margin-bottom: 20px;
+    text-align: center;
+} 
+
+
+  button {
+    padding: 8px 16px;
+    margin: 4px 0;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    background-color: #285E96;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #0A056B;
+  }
+
+  button.selected {
+    background-color: #4CAF50;
+    color: white;
+  }
+
+  h3 {
+    margin-top: 1.5rem;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+  }
+  

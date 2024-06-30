@@ -100,7 +100,7 @@ async agregarAdministrador(administrador: Administrador): Promise<void> {
       const data = await firstValueFrom(this.getDocDataByEmail(email).pipe(first()));
       if (data) {
         const datosPerfil = new PerfilDto(data.nombre, data.apellido, data.edad, data.dni, data.email, data.password, data.tipoUser, data.habilitado, data.especialidad,
-          data.foto, data.obraSocial, data.imagenUno, data.imagenDos);
+          data.foto, data.obraSocial, data.imagenUno, data.imagenDos, data.horaEntrada, data.horaSalida, data.diasTrabaja);
         return datosPerfil;
       } else {
         throw new Error('Usuario no encontrado');
@@ -333,28 +333,6 @@ async agregarAdministrador(administrador: Administrador): Promise<void> {
     );
   }
 
-  //modificar para agregar más especialidades correctamente a fb
-  async modificarEspecialista(userMail: string, valorHoraEntrada: string, valorHoraSalida:string, especialidad: string) {
-    try {
-      const col = collection(this.firestore, 'usuarios');
-      const q = query(col, where('email', '==', userMail));
-      console.log(userMail);
-
-      const querySnapshot = await getDocs(q);
-      if (!querySnapshot.empty) {
-        
-        const docRef = querySnapshot.docs[0].ref;
-        await updateDoc(docRef, {   
-          horaEntrada : valorHoraEntrada,
-          horaSalida: valorHoraSalida,
-          especialidad: especialidad});
-      } 
-    } catch (error) {
-      console.error('El especialista no pudo ser actualizado:', error);
-      throw error;
-    }
-  }
-
   async agregarTurno(turno: Turno): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       let c = collection(this.firestore, 'turnos');
@@ -440,6 +418,59 @@ async agregarAdministrador(administrador: Administrador): Promise<void> {
       });
   });
   }
+
+  async toggleEspecialista(userMail: string, valorHoraEntrada: string, valorHoraSalida:string, especialidad: string, diasTrabaja: string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      const col = collection(this.firestore, 'usuarios');
+      const q = query(col, where('email', '==', userMail));
+      console.log('Valor de especialista.', q);
+
+      getDocs(q)
+      .then((querySnapshot) => {
+        if (!querySnapshot.empty) {
+          const docRef = querySnapshot.docs[0].ref;
+          return updateDoc(docRef, {
+            horaEntrada : valorHoraEntrada,
+            horaSalida: valorHoraSalida,
+            especialidad: especialidad,
+            diasTrabaja: diasTrabaja
+          });
+        } else {
+          throw new Error('No se encontró el especialista.');
+        }
+      })
+      .then(() => {
+        console.log('Especialista actualizado exitosamente en Firestore.');
+        resolve();
+      })
+      .catch((error) => {
+        console.error('No se pudo actualizar el especialista. Error:', error);
+        reject(error);
+      });
+  });
+  }
+
+
+  // async modificarEspecialista(userMail: string, valorHoraEntrada: string, valorHoraSalida:string, especialidad: string) {
+  //   try {
+  //     const col = collection(this.firestore, 'usuarios');
+  //     const q = query(col, where('email', '==', userMail));
+  //     console.log(userMail);
+
+  //     const querySnapshot = await getDocs(q);
+  //     if (!querySnapshot.empty) {
+        
+  //       const docRef = querySnapshot.docs[0].ref;
+  //       await updateDoc(docRef, {   
+  //         horaEntrada : valorHoraEntrada,
+  //         horaSalida: valorHoraSalida,
+  //         especialidad: especialidad});
+  //     } 
+  //   } catch (error) {
+  //     console.error('El especialista no pudo ser actualizado:', error);
+  //     throw error;
+  //   }
+  // }
 
   getPacientes(): Observable<Paciente[]> {
     const usersRef = collection(this.firestore, 'usuarios');

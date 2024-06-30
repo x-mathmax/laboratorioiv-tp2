@@ -10,6 +10,10 @@
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
                 <span class="navbar-text">
                     <ul class="navbar-nav">
+                      <li class="nav-item" >
+                        <button *ngIf="tipoUser === 'especialista'" type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-md text-white backgroundBlue"
+                        (click)="goMisHorarios()">Mis horarios</button>
+                      </li>
                         <li class="nav-item" >
                           <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-md text-white backgroundBlue"
                           (click)="goHome()">Volver</button>
@@ -32,7 +36,7 @@
             <p><img class="fotoPerfil" *ngIf="perfilData.imagenUno" [src]="perfilData.imagenUno" alt=""><img class="fotoPerfil" *ngIf="perfilData.imagenDos" [src]="perfilData.imagenDos" alt=""></p>
             <p><strong>Nombre:</strong> {{ perfilData.nombre }}</p>
             <p><strong>Apellido:</strong> {{ perfilData.apellido }}</p>
-            <p><strong>Email:</strong> {{ perfilData.mail }}</p>
+            <p><strong>Email:</strong> {{ perfilData.email }}</p>
             <p><strong>Dni:</strong> {{ perfilData.dni }}</p>
             <p><strong>Obra Social:</strong> {{ perfilData.obraSocial }}</p>
           </div>
@@ -42,14 +46,16 @@
             <p><img class="fotoPerfil" *ngIf="perfilData.foto" [src]="perfilData.foto" alt=""></p>
             <p><strong>Nombre:</strong> {{ perfilData.nombre }}</p>
             <p><strong>Apellido:</strong> {{ perfilData.apellido }}</p>
-            <p><strong>Email:</strong> {{ perfilData.mail }}</p>
+            <p><strong>Email:</strong> {{ perfilData.email }}</p>
             <p><strong>Dni:</strong> {{ perfilData.dni }}</p>
             <p><strong>Especialidad/es:</strong> {{ perfilData.especialidad }}</p>
+            <p><strong>Horario Laboral:</strong> {{ perfilData.horaEntrada }} - {{perfilData.horaSalida}}</p>
+            <p><strong>Días laborales:</strong> {{ perfilData.diasTrabaja }}</p>
           </div>
 
         </div>
-          <!-- <div *ngIf="!perfilData">
+          <div *ngIf="!perfilData">
             <p>Cargando datos del perfil...</p>
-          </div> -->
+          </div>
   </div>
 </body>

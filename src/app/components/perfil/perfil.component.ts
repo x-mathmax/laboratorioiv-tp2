@@ -44,4 +44,9 @@ export class PerfilComponent implements OnInit {
       console.error("Error:", error);
     });
   }
+
+  goMisHorarios() : void {
+    this.router.navigate(['/horarios']);
+  }
+
 }

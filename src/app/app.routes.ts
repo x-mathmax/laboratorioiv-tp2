@@ -21,5 +21,7 @@ export const routes: Routes = [
     { path: 'turnos/nuevo',
         loadComponent: () => import('./components/alta-turnos/alta-turnos.component').then(c => c.AltaTurnosComponent) },
     { path: 'perfil',
-        loadComponent: () => import('./components/perfil/perfil.component').then(c => c.PerfilComponent) }
+        loadComponent: () => import('./components/perfil/perfil.component').then(c => c.PerfilComponent) },
+    { path: 'horarios',
+        loadComponent: () => import('./components/horarios-especialista/horarios-especialista.component').then(c => c.HorariosEspecialistaComponent) }
 ];

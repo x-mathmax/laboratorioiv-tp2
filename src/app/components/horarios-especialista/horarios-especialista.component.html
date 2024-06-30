@@ -1,0 +1,68 @@
+<body>
+    <header>
+      <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+          <img id="logo" src="../../../assets/logo.png" alt="logo sanatorio">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
+            <span class="navbar-text">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <button type="button" class="btn btn-md text-white backgroundBlue" (click)="goBack()">Volver</button>
+                </li>
+                <li class="nav-item">
+                  <button type="button" class="btn btn-md text-white backgroundBlue" (click)="gohome()">Home</button>
+                </li>
+              </ul>
+            </span>
+          </div>
+        </div>
+      </nav>
+    </header>
+  
+    <div class="container">
+      <app-spinner *ngIf="loading"></app-spinner>
+      <div class="section">
+        <h3>Especialidades</h3>
+        <div class="buttons">
+          <button *ngFor="let especialidad of especialidades" (click)="toggleEspecialidad(especialidad)" [class.selected]="selectedEspecialidades.includes(especialidad)" style="margin-right: 1rem;">
+            {{ especialidad.nombre }}
+          </button>
+        </div>
+      </div>
+  
+      <div class="section">
+        <h3>Días</h3>
+        <div class="buttons">
+          <button *ngFor="let dia of dias" (click)="toggleDia(dia)" [class.selected]="selectedDias.includes(dia)" style="margin-right: 1rem;">
+            {{ dia }}
+          </button>
+        </div>
+      </div>
+  
+      <div class="section">
+        <h3>Horarios</h3>
+        <div class="buttons">
+          <button *ngFor="let horario of horarios" (click)="toggleHorario(horario)" [class.selected]="selectedHorarios.includes(horario)" style="margin-right: 1rem;">
+            {{ horario }}
+          </button>
+        </div>
+      </div>
+  
+      <div class="section">
+        <h3>Resumen de selección:</h3>
+        <p>Días seleccionados: {{ getSelectedDias() }}</p>
+        <p>Especialidades seleccionadas: {{ getSelectedEspecialidades() }}</p>
+        <p>Horarios seleccionados:</p>
+        <p *ngIf="selectedHorarios.length === 2">Hora Ingreso: {{ getIngresoYFin().ingreso }}</p>
+        <p *ngIf="selectedHorarios.length === 2">Hora Fin: {{ getIngresoYFin().fin }}</p>
+      </div>
+  
+      <div class="buttons">
+        <button (click)="updateProfile()">Confirmar Selección</button>
+      </div>
+    </div>
+  </body>
