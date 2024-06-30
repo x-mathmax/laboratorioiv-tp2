@@ -1,1 +1,71 @@
-<p>turnos-especialista works!</p>
+<body>
+    <header>
+      <nav class="navbar navbar-expand-lg">
+          <div class="container-fluid">
+            <img id="logo" src="../../../assets/logo.png" alt="logo sanatorio" >
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarText">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
+              <span class="navbar-text">
+                  <ul class="navbar-nav">
+                      <li class="nav-item">                    
+                        <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-md text-white backgroundBlue"
+                        (click)="volver()">Volver</button>
+                      </li>
+                    </ul>
+              </span>
+            </div>
+          </div>
+      </nav>
+  </header>
+  
+  
+    <div class="containerTotal">
+      <app-spinner *ngIf="loading"></app-spinner>
+      <div *ngIf="turnosArray.length > 0">
+        <div class="filtros">
+            <input class="filtroIndividual" type="text" placeholder="Filtrar por especialidad" (input)="onEspecialidadFilterChange($event)">
+            <input class="filtroIndividual" type="text" placeholder="Filtrar por especialista" (input)="onPacienteFilterChange($event)">
+        </div>
+      
+        <table>
+          <thead>
+            <tr>
+              <th>Especialidad</th>
+              <th>Paciente</th>
+              <th>Email</th>
+              <th>Fecha</th>
+              <th>Hora</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let turno of filteredTurnos">
+              <td>{{ turno.especialidad }}</td>
+              <td>{{ turno.nombrePaciente }}</td>
+              <td>{{ turno.paciente }}</td>
+              <td>{{ turno.fecha}}</td>
+              <td>{{ turno.horario}}</td>
+              <td [ngClass]="{'bold': true, 'large-text': true}">{{ turno.estado }}</td>
+              <td>
+                <button *ngIf="turno.estado === 'pendiente'" (click)="cancelarTurno(turno)" style="margin-right: 1rem;">Cancelar</button>
+                <button *ngIf="turno.estado === 'pendiente'"  (click)="rechazarTurno(turno)" style="margin-right: 1rem;">Rechazar</button>
+                <button *ngIf="turno.estado === 'pendiente'"  (click)="aceptarTurno(turno)" style="margin-right: 1rem;">Aceptar</button>
+                <button *ngIf="turno.estado === 'aceptado'"  (click)="finalizarTurno(turno)" style="margin-right: 1rem;">Finalizar</button>
+                <button *ngIf="turno.resenia" (click)="verResenia(turno)" style="margin-right: 1rem;">Ver Reseña</button>
+                <button *ngIf="turno.comentario" (click)="verComentario(turno)" style="margin-right: 1rem;">Ver Comentario</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div *ngIf="turnosArray.length === 0 && loading === false">
+      <div class="filtros">
+    <h3>El especialista <b>{{userIn}}</b> no posee turnos agendados actualmente.</h3>
+    </div>
+    </div>
+  </body>

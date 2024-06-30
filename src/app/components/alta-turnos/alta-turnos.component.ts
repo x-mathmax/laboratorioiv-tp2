@@ -8,6 +8,7 @@ import { Especialista } from '../../models/Especialista';
 import { DataService } from '../../services/data.service';
 import { Router } from '@angular/router';
 import { Especialidad } from '../../models/Especialidad';
+import { Paciente } from '../../models/Paciente';
 
 @Component({
   selector: 'app-alta-turnos',
@@ -38,18 +39,37 @@ export class AltaTurnosComponent implements AfterViewInit {
   especialidadesConFoto: any[] = [];
   especialidadesArray: Especialidad[] = [];
   fechaTurnoFormateada: any;
+  currentUser: any;
+  dataUser: any;
+  usuarioTurno!: Paciente;
+  tipoUser: any;
+  pacientes$!: Observable<any[]>;
+  pacientes : any[] = [];;
+  selectedPaciente: string;
+  selectedPacienteName: string;
 
   constructor(private firestoreService : FirestoreService, private cdr: ChangeDetectorRef, private data: DataService, private router: Router){
     this.selectedValueHora = '';
-    this.turnoAlta = new Turno('','', '', '', '', '', '', '', '', '', '');
+    this.turnoAlta = new Turno('','', '', '', '', '', '', '', '', '', '', '', '');
+    this.selectedPaciente = '';
+    this.selectedPacienteName = '';
     this.fetchEspecialidades();
+    this.currentUser = this.data.getItem('username');
+    this.getUser();
   }
 
   ngAfterViewInit() {
-    this.fetchData();
-    
+    this.fetchData(); 
+    this.fetchPacientes();
     this.cdr.detectChanges();
 
+  }
+
+  onPacienteChange(event: Event): void {
+    const selectElement = event.target as HTMLSelectElement;
+    this.selectedPaciente = selectElement.value;
+    console.log('Paciente seleccionado:', this.selectedPaciente);
+    // Puedes agregar aquí el código para manejar el paciente seleccionado
   }
 
   fetchData() {
@@ -69,6 +89,24 @@ export class AltaTurnosComponent implements AfterViewInit {
     });
   }
 
+  fetchPacientes() {
+    this.loading = true;
+    this.pacientes$ = this.firestoreService.getPacientes();
+    this.pacientes$.subscribe({
+      next: (pacientes) => {
+        console.log(pacientes);
+        this.pacientes = pacientes;
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error fetching pacientes.', err);
+        this.loading = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
   fetchEspecialidades() {
     this.especialidades$ = this.firestoreService.getCollectionData('especialidades');
     this.especialidades$.subscribe({
@@ -78,6 +116,21 @@ export class AltaTurnosComponent implements AfterViewInit {
       },
       error: (err) => {
         console.error('Error fetching esp.:', err);
+      }
+    });
+  }
+
+  getUser() {
+    this.dataUser = this.firestoreService.getDocDataByEmail(this.currentUser);
+    this.dataUser.subscribe({
+      next: (data: any) => {
+        console.log('dataUser:', data);
+        this.usuarioTurno = data;
+        this.tipoUser = data.tipoUser;
+        console.log('tipoUser:',data.tipoUser)
+      },
+      error: (err: any) => {
+        console.error('Error trayendo user:', err);
       }
     });
   }
@@ -96,6 +149,7 @@ export class AltaTurnosComponent implements AfterViewInit {
     console.log("horas", this.horasEspecialista);
     
     this.turnoAlta.especialista = especialista.email;
+    this.turnoAlta.nombreEspecialista = especialista.nombre;
     //obtengo turnos ocupados de ese especialista
     this.firestoreService.getTurnosOcupadosEspecialistas('turnos').subscribe(res => {
       this.turnosOcupados = res;
@@ -161,7 +215,20 @@ export class AltaTurnosComponent implements AfterViewInit {
 
   async confirmarTurno() {
     if (this.turnoAlta.fecha && this.turnoAlta.horario && this.turnoAlta.especialidad && this.turnoAlta.especialista){
-      this.turnoAlta.paciente = this.data.getItem('username');
+      if (this.tipoUser === 'administrador') {
+        if (this.selectedPaciente != null && this.selectedPaciente != '') {
+        this.turnoAlta.paciente = this.selectedPaciente;
+        const auxPaciente = this.getUsuarioNombrePorEmail(this.selectedPaciente);
+        if (auxPaciente != null && auxPaciente != '')
+        this.turnoAlta.nombrePaciente = auxPaciente;
+        }
+        console.log('nombre + mail administrador a pac', this.turnoAlta.nombrePaciente, this.turnoAlta.paciente);
+      } else {
+        this.turnoAlta.nombrePaciente = this.usuarioTurno.nombre;
+        this.turnoAlta.paciente = this.usuarioTurno.email;
+        //this.turnoAlta.paciente = this.data.getItem('username');
+        console.log('nombre + mail', this.turnoAlta.nombrePaciente, this.turnoAlta.paciente);
+      }
       this.turnoAlta.estado = 'pendiente'
       try {
         await this.firestoreService.agregarTurno(this.turnoAlta);  
@@ -181,6 +248,11 @@ export class AltaTurnosComponent implements AfterViewInit {
 
   volver() :void{
     this.router.navigate(['/home']);
+  }
+
+  getUsuarioNombrePorEmail(email: string): string | undefined {
+    const paciente = this.pacientes.find(u => u.email === email);
+    return paciente ? paciente.nombre : undefined;
   }
 
   cruzarEspecialidades(especialidadesArray: any[], especialidades: string[]): any[] {

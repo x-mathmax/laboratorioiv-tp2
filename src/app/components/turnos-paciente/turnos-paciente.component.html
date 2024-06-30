@@ -23,7 +23,8 @@
 
 
   <div class="containerTotal">
-    <div *ngIf="turnos.length > 0">
+    <app-spinner *ngIf="loading"></app-spinner>
+    <div *ngIf="turnosArray.length > 0">
       <div class="filtros">
           <input class="filtroIndividual" type="text" placeholder="Filtrar por especialidad" (input)="onEspecialidadFilterChange($event)">
           <input class="filtroIndividual" type="text" placeholder="Filtrar por especialista" (input)="onEspecialistaFilterChange($event)">
@@ -34,6 +35,7 @@
           <tr>
             <th>Especialidad</th>
             <th>Especialista</th>
+            <th>Email</th>
             <th>Fecha</th>
             <th>Hora</th>
             <th>Estado</th>
@@ -43,21 +45,24 @@
         <tbody>
           <tr *ngFor="let turno of filteredTurnos">
             <td>{{ turno.especialidad }}</td>
+            <td>{{ turno.nombreEspecialista }}</td>
             <td>{{ turno.especialista }}</td>
             <td>{{ turno.fecha}}</td>
             <td>{{ turno.horario}}</td>
             <td [ngClass]="{'bold': true, 'large-text': true}">{{ turno.estado }}</td>
             <td>
-              <button *ngIf="turno.estado === 'pendiente'" (click)="cancelarTurno(turno)">Cancelar</button>
-              <button *ngIf="turno.comentario" (click)="verComentario(turno)">Ver Comentario</button>
-              <button *ngIf="turno.estado === 'realizado' && turno.comentario" (click)="completarEncuesta(turno)">Completar Encuesta</button>
+              <button *ngIf="turno.estado === 'pendiente'" (click)="cancelarTurno(turno)" style="margin-right: 1rem;">Cancelar</button>
+              <button *ngIf="turno.comentario" (click)="verComentario(turno)" style="margin-right: 1rem;">Ver Comentario</button>
+              <button *ngIf="turno.resenia" (click)="verResenia(turno)" style="margin-right: 1rem;">Ver Reseña</button>
+              <button *ngIf="turno.resenia && !turno.encuesta && turno.estado === 'finalizado'" (click)="completarEncuesta(turno)" style="margin-right: 1rem;">Completar Encuesta</button>
+              <button *ngIf="turno.resenia && !turno.calificacionAtencion" (click)="calificarAtencion(turno)" style="margin-right: 1rem;">Calificar Atención</button>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
-  <div *ngIf="turnos.length === 0">
+  <div *ngIf="turnosArray.length === 0 && loading === false">
     <div class="filtros">
   <h3>El usuario <b>{{userIn}}</b> no posee turnos agendados actualmente.</h3>
   </div>

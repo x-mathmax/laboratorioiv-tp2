@@ -53,13 +53,21 @@
   <div class="horarios">
     <!-- <div *ngIf="turnosDisponibles.length > 0"> -->
       <div *ngIf="etapa === 2">
+        <div *ngIf="tipoUser === 'administrador'">
+          <div data-mdb-input-init class="form-outline form-white mb-4">
+            <label for="paciente">Elija el paciente a quién le asignará el turno:</label>
+            <select id="paciente" (change)="onPacienteChange($event)">
+              <option *ngFor="let pac of pacientes" [value]="pac.email">{{ pac.email }}</option>
+            </select>
+        </div>
+    </div>
         <h3>Días y Horarios Disponibles</h3>
         <div class="turnos-container">
           <div class="turno" *ngFor="let turno of turnosDisponibles">
             <button class="fechaHora" (click)="seleccionarFechaHora(turno.fecha, turno.hora)">{{ turno.fecha | date:'yyyy-MM-dd' }} {{ formatTimeTo12Hour(turno.hora) }}</button>      
           </div>
         </div>
-    </div>
+  </div>
   </div>
 
   <div class="confirmacion">

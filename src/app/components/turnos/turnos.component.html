@@ -1,46 +1,74 @@
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg">
-            <div class="container-fluid">
-              <img id="logo" src="../../../assets/logo.png" alt="logo sanatorio" >
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class="collapse navbar-collapse" id="navbarText">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
-                <span class="navbar-text">
-                    <ul class="navbar-nav">
-                        <li class="nav-item" >
-                          <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-md text-white backgroundBlue"
-                          (click)="goHome()">Volver</button>
-                        </li>
-                        <li class="nav-item">                    
-                          <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-md text-white backgroundBlue"
-                          (click)="logout()">Cerrar Sesión</button>
-                        </li>
-                      </ul>
-                </span>
-              </div>
-            </div>
-        </nav>
-    </header>
+  <header>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+          <img id="logo" src="../../../assets/logo.png" alt="logo sanatorio" >
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
+            <span class="navbar-text">
+                <ul class="navbar-nav">
+                    <li class="nav-item">                    
+                      <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-md text-white backgroundBlue"
+                      (click)="goHome()">Volver</button>
+                    </li>
+                    <li class="nav-item">                    
+                      <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-md text-white backgroundBlue"
+                      (click)="logout()">Cerrar Sesion</button>
+                    </li>
+                  </ul>
+            </span>
+          </div>
+        </div>
+    </nav>
+</header>
 
-    <div class="container">
-      <h1>Seleccione acción a realizar:</h1>
-      <div class="button-container">
-      <button data-mdb-button-init data-mdb-ripple-init class="btn btn-lg backgroundBlue"
-      style="padding-left: 2.5rem; padding-right: 2.5rem;" (click)="turnosPacientes()">turnos usuarios</button>
-      <button data-mdb-button-init data-mdb-ripple-init class="btn btn-lg backgroundBlue"
-      style="padding-left: 2.5rem; padding-right: 2.5rem;" (click)="turnosEspecialistas()">turnos especialista</button>
+
+  <div class="containerTotal">
+    <app-spinner *ngIf="loading"></app-spinner>
+    <div *ngIf="turnosArray.length > 0">
+      <div class="filtros">
+          <input class="filtroIndividual" type="text" placeholder="Filtrar por especialidad" (input)="onEspecialidadFilterChange($event)">
+          <input class="filtroIndividual" type="text" placeholder="Filtrar por especialista" (input)="onEspecialistaFilterChange($event)">
       </div>
-      <div class="form-container">
-      <ng-container *ngIf="componenteActivo === 'especialistas'">
-          <app-turnos-especialista></app-turnos-especialista>
-      </ng-container>
-      <ng-container *ngIf="componenteActivo === 'pacientes'">
-          <app-turnos-paciente></app-turnos-paciente>
-      </ng-container>
-      </div>
+    
+      <table>
+        <thead>
+          <tr>
+            <th>Especialidad</th>
+            <th>Especialista</th>
+            <th>Email</th>
+            <th>Paciente</th>
+            <th>Email</th>
+            <th>Fecha</th>
+            <th>Hora</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let turno of filteredTurnos">
+            <td>{{ turno.especialidad }}</td>
+            <td>{{ turno.nombreEspecialista }}</td>
+            <td>{{ turno.especialista }}</td>
+            <td>{{ turno.nombrePaciente }}</td>
+            <td>{{ turno.paciente }}</td>
+            <td>{{ turno.fecha}}</td>
+            <td>{{ turno.horario}}</td>
+            <td [ngClass]="{'bold': true, 'large-text': true}">{{ turno.estado }}</td>
+            <td>
+              <button *ngIf="turno.estado === 'pendiente'" (click)="cancelarTurno(turno)" style="margin-right: 1rem;">Cancelar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div *ngIf="turnosArray.length === 0 && loading === false">
+    <div class="filtros">
+  <h3>El usuario <b>{{userIn}}</b> no posee turnos agendados actualmente.</h3>
+  </div>
   </div>
 </body>
-

@@ -259,10 +259,12 @@ async agregarAdministrador(administrador: Administrador): Promise<void> {
           const data = doc.data() as Turno;
           return {
             paciente: data.paciente,
+            nombrePaciente: data.nombrePaciente,
             especialista: data.especialista,
+            nombreEspecialista: data.nombreEspecialista,
             especialidad: data.especialidad,
             diagnostico: data.diagnostico,
-            reseña: data.reseña,
+            resenia: data.resenia,
             estado: data.estado,
             calificacionAtencion: data.calificacionAtencion,
             comentario: data.comentario,
@@ -285,10 +287,40 @@ async agregarAdministrador(administrador: Administrador): Promise<void> {
           const data = doc.data() as Turno;
           return {
             paciente: data.paciente,
+            nombrePaciente: data.nombrePaciente,
             especialista: data.especialista,
+            nombreEspecialista: data.nombreEspecialista,
             especialidad: data.especialidad,
             diagnostico: data.diagnostico,
-            reseña: data.reseña,
+            resenia: data.resenia,
+            estado: data.estado,
+            calificacionAtencion: data.calificacionAtencion,
+            comentario: data.comentario,
+            fecha: data.fecha,
+            horario: data.horario,
+            encuesta: data.encuesta,
+          };
+        })
+      )
+    );
+  }
+
+  getTurnosPorEspecialista(email: string): Observable<Turno[]> {
+    const usersRef = collection(this.firestore, 'turnos');
+    const q = query(usersRef, where('especialista', '==', email));
+    
+    return from(getDocs(q)).pipe(
+      map(querySnapshot => 
+        querySnapshot.docs.map(doc => {
+          const data = doc.data() as Turno;
+          return {
+            paciente: data.paciente,
+            nombrePaciente: data.nombrePaciente,
+            especialista: data.especialista,
+            nombreEspecialista: data.nombreEspecialista,
+            especialidad: data.especialidad,
+            diagnostico: data.diagnostico,
+            resenia: data.resenia,
             estado: data.estado,
             calificacionAtencion: data.calificacionAtencion,
             comentario: data.comentario,
@@ -328,7 +360,9 @@ async agregarAdministrador(administrador: Administrador): Promise<void> {
       let c = collection(this.firestore, 'turnos');
       addDoc(c, {
         paciente : turno.paciente, 
+        nombrePaciente: turno.nombrePaciente,
         especialista: turno.especialista, 
+        nombreEspecialista: turno.nombreEspecialista,
         especialidad: turno.especialidad,
         estado: turno.estado, 
         fecha: turno.fecha, 
@@ -342,5 +376,93 @@ async agregarAdministrador(administrador: Administrador): Promise<void> {
       });
     });
   }
-}
 
+  async toggleTurnoFinalizar(turno: Turno, estado: string, diagnostico: string, resenia:string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      const col = collection(this.firestore, 'turnos');
+      const q = query(col, where('paciente', '==', turno.paciente),
+      where('especialista', '==', turno.especialista),
+      where('horario', '==', turno.horario),
+      where('fecha', '==', turno.fecha));
+      console.log('Valor de turno.', q);
+
+      getDocs(q)
+      .then((querySnapshot) => {
+        if (!querySnapshot.empty) {
+          const docRef = querySnapshot.docs[0].ref;
+          return updateDoc(docRef, {
+            estado: estado,
+            diagnostico: diagnostico,
+            resenia: resenia
+          });
+        } else {
+          throw new Error('No se encontró el turno.');
+        }
+      })
+      .then(() => {
+        console.log('Turno actualizado exitosamente en Firestore.');
+        resolve();
+      })
+      .catch((error) => {
+        console.error('No se pudo actualizar el turno. Error:', error);
+        reject(error);
+      });
+  });
+  }
+
+  async toggleTurno(turno: Turno, propiedad: string, newValue: string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      const col = collection(this.firestore, 'turnos');
+      const q = query(col, where('paciente', '==', turno.paciente),
+      where('especialista', '==', turno.especialista),
+      where('horario', '==', turno.horario),
+      where('fecha', '==', turno.fecha));
+      console.log('Valor de turno.', q);
+
+      getDocs(q)
+      .then((querySnapshot) => {
+        if (!querySnapshot.empty) {
+          const docRef = querySnapshot.docs[0].ref;
+          return updateDoc(docRef, {
+            [propiedad]: newValue
+          });
+        } else {
+          throw new Error('No se encontró el turno.');
+        }
+      })
+      .then(() => {
+        console.log('Turno actualizado exitosamente en Firestore.');
+        resolve();
+      })
+      .catch((error) => {
+        console.error('No se pudo actualizar el turno. Error:', error);
+        reject(error);
+      });
+  });
+  }
+
+  getPacientes(): Observable<Paciente[]> {
+    const usersRef = collection(this.firestore, 'usuarios');
+    const q = query(usersRef, where('tipoUser', '==', 'paciente'));
+    
+    return from(getDocs(q)).pipe(
+      map(querySnapshot => 
+        querySnapshot.docs.map(doc => {
+          const data = doc.data() as Paciente;
+          return {
+            nombre: data.nombre,
+            apellido: data.apellido,
+            edad: data.edad,
+            dni: data.dni,
+            email: data.email,
+            password: data.password,
+            tipoUser: data.tipoUser,
+            obraSocial: data.obraSocial,
+            imagenUno: data.imagenUno,
+            imagenDos: data.imagenDos
+          };
+        })
+      )
+    );
+  }
+}
