@@ -11,6 +11,7 @@ import { UserLogData } from '../models/UserLogData';
 import { PerfilDto } from '../models/PerfilDto';
 import { Turno } from '../models/Turno';
 import { Especialidad } from '../models/Especialidad';
+import { HistoriaClinica } from '../models/HistoriaClinica';
 
 
 @Injectable({
@@ -495,5 +496,88 @@ async agregarAdministrador(administrador: Administrador): Promise<void> {
         })
       )
     );
+  }
+
+  async agregarHC(hc: HistoriaClinica, campoUno: string, campoDos: string, campoTres: string, propiedadUno: string, propiedadDos: string, propiedadTres: string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      let c = collection(this.firestore, 'historiasclinicas');
+      let data: any = {
+        nombrePaciente: hc.nombrePaciente,
+        emailPaciente: hc.emailPaciente,
+        nombreEspecialista: hc.nombreEspecialista,
+        emailEspecialista: hc.emailEspecialista,
+        fechaTurno: hc.fechaTurno,
+        especialidad: hc.especialidad,
+        diagnostico: hc.diagnostico,
+        altura: hc.altura,
+        peso: hc.peso,
+        temperatura: hc.temperatura,
+        presion: hc.presion,
+      };
+
+      if (campoUno && propiedadUno) {
+        data[propiedadUno] = campoUno;
+      }
+      if (campoDos && propiedadDos) {
+        data[propiedadDos] = campoDos;
+      }
+      if (campoTres && propiedadTres) {
+        data[propiedadTres] = campoTres;
+      }
+
+      addDoc(c, data)
+        .then(() => {
+          console.log('Historia Clínica agregada exitosamente en Firestore.');
+          resolve();
+        })
+        .catch((error) => {
+          console.error('No se pudo agregar la historia clínica. Error: ', error);
+          reject(error);
+        });
+    });
+  }
+
+  // getHcFiltrado(email: string, user:string): Observable<any> {
+  //   const usersRef = collection(this.firestore, 'historiasclinicas') as CollectionReference<DocumentData>;
+  //   const q = query(usersRef, where(user, '==', email));
+    
+  //   return new Observable<any>(observer => {
+  //     getDocs(q)
+  //       .then(snapshot => {
+  //         if (snapshot.empty) {
+  //           observer.next(null); // Si no encuentro nada que coincida devuelvo un nullcito
+  //         } else {
+  //           const doc = snapshot.docs[0];
+  //           const data = doc.data();
+  //           const id = doc.id;
+  //           observer.next({ id, ...data }); // Armo doc con sus datos.
+  //         }
+  //         observer.complete();
+  //       })
+  //       .catch(error => observer.error(error));
+  //   });
+  // }
+
+  getHcFiltrado(email: string, user: string): Observable<any[]> {
+    const usersRef = collection(this.firestore, 'historiasclinicas') as CollectionReference<DocumentData>;
+    const q = query(usersRef, where(user, '==', email));
+    
+    return new Observable<any[]>(observer => {
+      getDocs(q)
+        .then(snapshot => {
+          if (snapshot.empty) {
+            observer.next([]); // Si no encuentro nada que coincida devuelvo un array vacío
+          } else {
+            const docs = snapshot.docs.map(doc => {
+              const data = doc.data();
+              const id = doc.id;
+              return { id, ...data }; // Armo doc con sus datos.
+            });
+            observer.next(docs); // Devuelvo todos los documentos encontrados en un array
+          }
+          observer.complete();
+        })
+        .catch(error => observer.error(error));
+    });
   }
 }

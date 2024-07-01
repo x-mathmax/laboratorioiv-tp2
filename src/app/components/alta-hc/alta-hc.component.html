@@ -1,0 +1,66 @@
+<section class="vh-100 gradient-custom">
+    <div class="container py-5 ">
+      <form [formGroup]="form" (ngSubmit)="cargarHc()">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+          <div class="card text-white" style="border-radius: 1rem;">
+            <div class="card-body p-5 text-center">
+  
+              <div class="mb-md-5 mt-md-4 pb-5">
+  
+                <h2 class="lead fw-normal mb-0 me-15">Cargar datos de atención:</h2>
+                <p class="text-white-50 mb-5">Por favor, ingrese los datos solicitados a continuación:</p>
+
+                <div data-mdb-input-init class="form-outline form-white mb-4">
+                  <label class="form-label customLetter" for="altura">Altura:</label>
+                  <input type="text" id="altura" class="form-control form-control-lg" formControlName="altura" requiered/>
+                </div>
+
+                <div data-mdb-input-init class="form-outline form-white mb-4">
+                  <label class="form-label customLetter" for="apellido">Peso:</label>
+                  <input type="text" id="peso" class="form-control form-control-lg" formControlName="peso" requiered/>
+                  
+                </div>
+  
+                <div data-mdb-input-init class="form-outline form-white mb-4">
+                  <label class="form-label customLetter" for="temperatura">Temperatura:</label>
+                  <input type="text" id="temperatura" class="form-control form-control-lg" formControlName="temperatura" requiered/>
+                </div>
+
+                <div data-mdb-input-init class="form-outline form-white mb-4">
+                  <label class="form-label customLetter" for="presion">Presión:</label>
+                  <input type="text" id="presion" class="form-control form-control-lg" formControlName="presion" requiered/>
+                </div>
+
+                <!-- datos dinamicos                 -->
+                <div data-mdb-input-init class="form-outline form-white mb-4">
+                <p class="form-label customLetter">Ingrese un dato y su valor (opcional):</p>
+                  <input type="text" id="propiedadUno" class="form-control form-control-lg" formControlName="propiedadUno"/>
+                  <input type="text" id="valorUno" class="form-control form-control-lg" formControlName="valorUno"/>
+                </div>
+
+                <div data-mdb-input-init class="form-outline form-white mb-4">
+                    <p class="form-label customLetter">Ingrese un segundo dato y su valor (opcional):</p>
+                    <input type="text" id="propiedadDos" class="form-control form-control-lg" formControlName="propiedadDos"/>
+                    <input type="text" id="valorDos" class="form-control form-control-lg" formControlName="valorDos"/>
+                </div>
+
+                <div data-mdb-input-init class="form-outline form-white mb-4">
+                    <p class="form-label customLetter">Ingrese un tercer dato y su valor (opcional):</p>
+                    <input type="text" id="propiedadTres" class="form-control form-control-lg" formControlName="propiedadTres"/>
+                    <input type="text" id="valorTres" class="form-control form-control-lg" formControlName="valorTres"/>
+                </div>
+
+                <button  data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-light btn-lg px-5" 
+                type="submit">Guardar Hc</button> 
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    </div>
+</section>
+
+
+

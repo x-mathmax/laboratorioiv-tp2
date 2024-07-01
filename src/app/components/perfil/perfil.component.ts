@@ -17,7 +17,7 @@ export class PerfilComponent implements OnInit {
   tipoUser!: string;
 
   constructor(private router: Router, private firestoreService : FirestoreService, private data: DataService){
-    this.usuario = this.usuario = this.data.getItem('username');
+    this.usuario = this.data.getItem('username');
   }
 
   ngOnInit(): void {
@@ -31,6 +31,10 @@ export class PerfilComponent implements OnInit {
 
   goHome():void {
     this.router.navigate(['/home']);
+  }
+
+  goHc():void {
+    this.router.navigate(['/historiaclinica']);
   }
 
   getUser() : void {

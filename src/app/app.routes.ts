@@ -23,5 +23,7 @@ export const routes: Routes = [
     { path: 'perfil',
         loadComponent: () => import('./components/perfil/perfil.component').then(c => c.PerfilComponent) },
     { path: 'horarios',
-        loadComponent: () => import('./components/horarios-especialista/horarios-especialista.component').then(c => c.HorariosEspecialistaComponent) }
+        loadComponent: () => import('./components/horarios-especialista/horarios-especialista.component').then(c => c.HorariosEspecialistaComponent) },
+    { path: 'historiaclinica',
+        loadComponent: () => import('./components/historia-clinica/historia-clinica.component').then(c => c.HistoriaClinicaComponent) }
 ];

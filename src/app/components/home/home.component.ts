@@ -61,4 +61,8 @@ export class HomeComponent implements OnInit{
   sacarTurno():void {
     this.router.navigate(['/turnos/nuevo']);
   } 
+
+  goHc():void {
+    this.router.navigate(['/historiaclinica']);
+  }
 }

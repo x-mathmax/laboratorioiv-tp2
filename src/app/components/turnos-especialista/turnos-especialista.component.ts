@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { DataService } from '../../services/data.service';
 import { SpinnerComponent } from '../spinner/spinner.component';
 import { Observable } from 'rxjs';
+import { AltaHcComponent } from '../alta-hc/alta-hc.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-turnos-especialista',
@@ -25,7 +27,7 @@ export class TurnosEspecialistaComponent implements OnInit{
   userIn: string;
   loading: boolean = false;
 
-  constructor(private firestoreService: FirestoreService, private router: Router, private data: DataService, private cdr: ChangeDetectorRef) {
+  constructor(private firestoreService: FirestoreService, private router: Router, private data: DataService, private cdr: ChangeDetectorRef, private dialog: MatDialog) {
     this.hora = new Date(2024, 0, 1, 0, 0, 0, 0);
     this.turno = new Turno('', '', '', '','', '', '', '', '', '', this.hora, '', '');
     this.userIn = this.data.getItem('username');
@@ -158,6 +160,7 @@ export class TurnosEspecialistaComponent implements OnInit{
         try {
           await this.firestoreService.toggleTurnoFinalizar(turno, 'finalizado', result.diagnostico, result.resenia);
           this.data.executePopUp('Turno finalizado correctamente');
+          this.openHistoriaClinicaDialog(turno);
           this.fetchData();
           this.cdr.detectChanges();
           console.log('Diagnóstico y reseña guardados:', result);
@@ -184,5 +187,18 @@ export class TurnosEspecialistaComponent implements OnInit{
 
   volver() :void{
     this.router.navigate(['/home']);
+  }
+
+  openHistoriaClinicaDialog(turno: Turno): void {
+    const dialogRef = this.dialog.open(AltaHcComponent, {
+      width: '80%',
+      data: turno // Envio los datos del turno
+    });
+    console.log('turno en open historia clinica diaalog', turno);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Diálogo de Historia Clínica cerrado');
+      this.data.executePopUp('Historia clinica agregada exitosamente.');
+    });
   }
 }

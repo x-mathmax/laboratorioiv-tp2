@@ -58,6 +58,10 @@ export class UsuariosComponent implements AfterViewInit{
     this.componenteActivo = 'especialista';
   }
 
+  goHc():void {
+    this.router.navigate(['/historiaclinica']);
+  }
+
   generarExcel(): void {
     this.excelService.exportAsExcelFile(this.jsonUsers, this.fileName);
   }

@@ -13,26 +13,26 @@
                       <li class="nav-item">
                         <a class="nav-link">Bienvenido/a <b class="currentUser">{{usuario}}</b> !</a>
                       </li>
-                        <li class="nav-item" >
+                        <!-- <li class="nav-item" >
                           <button *ngIf="tipoUser === 'administrador'" type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-md text-white backgroundBlue"
                           (click)="goUsuarios()">Usuarios</button>
-                        </li>
-                        <li class="nav-item" >
+                        </li> -->
+                        <!-- <li class="nav-item" >
                           <button *ngIf="tipoUser !== 'administrador'" type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-md text-white backgroundBlue"
                           (click)="goTurnosEsp()">Mis turnos</button>
-                        </li>
-                        <li class="nav-item" >
+                        </li> -->
+                        <!-- <li class="nav-item" >
                           <button *ngIf="tipoUser === 'administrador'" type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-md text-white backgroundBlue"
                           (click)="goTurnosAdm()">Turnos</button>
-                        </li>
-                        <li class="nav-item" >
+                        </li> -->
+                        <!-- <li class="nav-item" >
                           <button *ngIf="tipoUser === 'administrador' || tipoUser === 'paciente'" type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-md text-white backgroundBlue"
                           (click)="sacarTurno()">Solicitar turno</button>
-                        </li>
-                        <li class="nav-item" >
+                        </li> -->
+                        <!-- <li class="nav-item" >
                           <button *ngIf="tipoUser === 'especialista' || tipoUser === 'paciente'" type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-md text-white backgroundBlue"
                           (click)="goPerfil()">Mi perfil</button>
-                        </li>
+                        </li> -->
                         <li class="nav-item">                    
                           <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-md text-white backgroundBlue"
                           (click)="logout()">Cerrar Sesión</button>
@@ -83,6 +83,12 @@
         <img src="https://cdn-icons-png.flaticon.com/256/9634/9634092.png" class="card-img" alt="...">
         <div class="card-img-overlay">
           <h5 class="card-title text-center customCardTitles">Mi perfil</h5>
+        </div>
+      </div>
+      <div *ngIf="tipoUser === 'especialista'" class="card text-white col-md-6 mb-6 sizeCards" (click)="goHc()">
+        <img src="https://png.pngtree.com/png-clipart/20210815/original/pngtree-people-icon-group-human-friend-vector-item-isolated-png-image_6639664.jpg" class="card-img" alt="...">
+        <div class="card-img-overlay" >
+          <h5 class="card-title text-center customCardTitles">Pacientes</h5>  
         </div>
       </div>
     </div>
