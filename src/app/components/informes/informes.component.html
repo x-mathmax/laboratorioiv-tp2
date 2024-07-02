@@ -33,6 +33,23 @@
         </nav>
     </header>
 
+    <div>
+      <table>
+        <thead>
+          <tr>
+            <th>Usuario</th>
+            <th>Fecha</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let log of logs$ | async">
+            <td>{{ log.email }}</td>
+            <td>{{ formatTimestamp(log!.fecha) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
     <div style="width: 40%; margin: auto;">
         <canvas #turnosPorEspecialidadChart style="margin-top: 2rem;"></canvas>
         <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-md text-white backgroundBlue" style="margin-top: 1rem;" (click)="exportarEspecialidadPdf()">Exportar Gráfico</button>

@@ -171,4 +171,9 @@ export class DataService {
       }
     });
   }
+
+  getUser():boolean {
+    const userData = localStorage.getItem('username');
+    return userData ? JSON.parse(userData) : null;
+}
 }

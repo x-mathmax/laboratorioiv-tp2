@@ -82,4 +82,18 @@
       </ng-container>
       </div>
   </div>
+
+  <div class="fab-container" *ngIf="pacientesArray.length > 0">
+    <button mat-fab class="colorButton" [matMenuTriggerFor]="menu" aria-label="FAB Menu">
+      <mat-icon>add</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item *ngFor="let user of pacientesArray" (click)="selectUser(user)">
+        <mat-icon><img class="iconos" *ngIf="user.imagenUno" [src]="user.imagenUno" alt="">
+          </mat-icon>
+        <span>{{ user.nombre }}</span>
+      </button>
+    </mat-menu>
+</div>
+
 </body>

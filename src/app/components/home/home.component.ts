@@ -39,6 +39,7 @@ export class HomeComponent implements OnInit{
   } 
 
   logout():void {
+    localStorage.clear();
     this.router.navigate(['/welcome']);
   }
 

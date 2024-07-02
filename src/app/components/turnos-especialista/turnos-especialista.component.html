@@ -24,11 +24,15 @@
   
     <div class="containerTotal">
       <app-spinner *ngIf="loading"></app-spinner>
-      <div *ngIf="turnosArray.length > 0">
+      <!-- <div *ngIf="turnosArray.length > 0">
         <div class="filtros">
             <input class="filtroIndividual" type="text" placeholder="Filtrar por especialidad" (input)="onEspecialidadFilterChange($event)">
             <input class="filtroIndividual" type="text" placeholder="Filtrar por especialista" (input)="onPacienteFilterChange($event)">
-        </div>
+        </div> -->
+        <div *ngIf="turnosArray.length > 0">
+          <div class="filtros">
+            <input class="filtroIndividual" type="text" placeholder="Buscar..." (input)="onSearchChange($event)">
+          </div>  
       
         <table>
           <thead>
@@ -57,6 +61,7 @@
                 <button *ngIf="turno.estado === 'aceptado'"  (click)="finalizarTurno(turno)" style="margin-right: 1rem;">Finalizar</button>
                 <button *ngIf="turno.resenia" (click)="verResenia(turno)" style="margin-right: 1rem;">Ver Reseña</button>
                 <button *ngIf="turno.comentario" (click)="verComentario(turno)" style="margin-right: 1rem;">Ver Comentario</button>
+                <button *ngIf="turno.historiaClinica" (click)="verHistoriaClinica(turno.historiaClinica)" style="margin-right: 1rem;">Ver Historia Clínica</button>
               </td>
             </tr>
           </tbody>

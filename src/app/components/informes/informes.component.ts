@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 import { ExcelService } from '../../services/excel.service';
 import {Chart, registerables, ChartType } from 'chart.js';
 import { PdfService } from '../../services/pdf.service';
+import { Timestamp } from '@angular/fire/firestore';
 
 Chart.register(...registerables);
 
@@ -408,6 +409,7 @@ export class InformesComponent implements OnInit, AfterViewInit {
   }
 
   logout():void {
+    localStorage.clear();
     this.router.navigate(['/welcome']);
   }
 
@@ -472,4 +474,10 @@ export class InformesComponent implements OnInit, AfterViewInit {
     }
 
   }
+
+  formatTimestamp(timestamp: Timestamp): string {
+    const date = timestamp.toDate();
+    return date.toLocaleString();
+  }
+
 }

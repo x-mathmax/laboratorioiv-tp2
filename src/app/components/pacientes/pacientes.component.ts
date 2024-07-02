@@ -79,6 +79,7 @@ constructor(private router: Router, private firestoreService: FirestoreService, 
   }
 
   logout():void {
+    localStorage.clear();
     this.router.navigate(['/welcome']);
   }
 
