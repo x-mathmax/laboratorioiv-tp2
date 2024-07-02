@@ -65,4 +65,8 @@ export class HomeComponent implements OnInit{
   goHc():void {
     this.router.navigate(['/historiaclinica']);
   }
+
+  goInformes():void {
+    this.router.navigate(['/informes']);
+  }
 }

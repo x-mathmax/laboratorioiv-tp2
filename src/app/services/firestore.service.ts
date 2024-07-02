@@ -559,4 +559,13 @@ async agregarAdministrador(administrador: Administrador): Promise<void> {
         .catch(error => observer.error(error));
     });
   }
+
+  agregarLogUsuarios(email : string) : void{
+    try{
+      let c = collection(this.firestore, 'logs');
+      addDoc(c, { email: email, fecha: new Date()});
+    }catch(error){
+      console.error('No se pudo agregar el log. Error: ', error);
+    }
+  }
 }

@@ -79,6 +79,12 @@
           <h5 class="card-title text-center customCardTitles">Solicitar turno</h5>
         </div>
       </div>
+      <div *ngIf="tipoUser === 'administrador'" class="card text-white col-md-6 mb-6 sizeCards" (click)="goInformes()">
+        <img src="https://img.freepik.com/vector-premium/diseno-colorido-vector-documento_341269-1258.jpg" class="card-img" alt="...">
+        <div class="card-img-overlay">
+          <h5 class="card-title text-center customCardTitles">Solicitar turno</h5>
+        </div>
+      </div>
       <div *ngIf="tipoUser === 'especialista' || tipoUser === 'paciente'" class="card text-white col-md-6 mb-6 sizeCards"(click)="goPerfil()">
         <img src="https://cdn-icons-png.flaticon.com/256/9634/9634092.png" class="card-img" alt="...">
         <div class="card-img-overlay">

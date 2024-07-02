@@ -75,6 +75,7 @@ export class LoginComponent implements OnInit {
               const { tipoUser, habilitado } = await this.firestoreService.getAndSaveTipoUserAndStatusByEmail(this.username);
               if (tipoUser == 'especialista' && habilitado == true || tipoUser == 'administrador' || tipoUser == 'paciente' ) {
                 this.dataService.setUserAndPassTest(this.username, '');
+                this.firestoreService.agregarLogUsuarios(this.username);
                 
                 this.firestoreService.getAndSaveTipoUserByEmail(this.username)
                   .then(data => {

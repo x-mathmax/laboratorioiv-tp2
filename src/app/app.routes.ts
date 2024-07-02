@@ -25,5 +25,7 @@ export const routes: Routes = [
     { path: 'horarios',
         loadComponent: () => import('./components/horarios-especialista/horarios-especialista.component').then(c => c.HorariosEspecialistaComponent) },
     { path: 'historiaclinica',
-        loadComponent: () => import('./components/historia-clinica/historia-clinica.component').then(c => c.HistoriaClinicaComponent) }
+        loadComponent: () => import('./components/historia-clinica/historia-clinica.component').then(c => c.HistoriaClinicaComponent) },
+    { path: 'informes',
+        loadComponent: () => import('./components/informes/informes.component').then(c => c.InformesComponent) }
 ];
