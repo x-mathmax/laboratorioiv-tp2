@@ -20,11 +20,13 @@
         <td>{{ user.edad }}</td>
         <td>{{ user.email }}</td>
         <td>{{ user.tipoUser }}</td>
-        <td>{{ user.habilitado === true ? 'Habilitado' : user.habilitado === false ? 'Deshabilitado' : '----------' }}</td>
+        <td [class.habilitado]="user.habilitado === true" [class.deshabilitado]="user.habilitado === false">{{ user.habilitado | estadoUsuario }}</td>
         <td>
-          <button (click)="onToggleHabilitado(user)">
-            {{ user.habilitado ? 'Deshabilitar' : 'Habilitar' }}
-          </button>
+        <button *ngIf="user.habilitado !== undefined && user.habilitado !== null && user.habilitado !== ''"
+        (click)="onToggleHabilitado(user)"
+        [appChangeColor]="user.habilitado">
+        {{ user.habilitado ? 'Deshabilitar' : 'Habilitar' }}
+        </button>
         </td>
       </tr>
     </tbody>

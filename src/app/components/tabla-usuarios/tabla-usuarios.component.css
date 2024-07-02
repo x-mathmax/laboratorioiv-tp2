@@ -50,5 +50,23 @@ table {
   table {
     font-size: 16px;
   }
+
+  .habilitado {
+    color: green;
+  }
+  
+  .deshabilitado {
+    color: red;
+  }
+
+  .button-red {
+    background-color: red;
+    color: white;
+  }
+  
+  .button-default {
+    background-color: #285E96;
+    color: white;
+  }
   
   

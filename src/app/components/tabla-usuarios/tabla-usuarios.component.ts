@@ -4,12 +4,14 @@ import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { UsuarioDto } from '../../models/UsuarioDto';
 import { SpinnerComponent } from '../spinner/spinner.component';
+import { EstadoUsuarioPipe } from '../../pipes/estado-usuario.pipe';
+import { ChangeColorDirective } from '../../directives/change-color.directive';
 
 
 @Component({
   selector: 'app-tabla-usuarios',
   standalone: true,
-  imports: [CommonModule, SpinnerComponent],
+  imports: [CommonModule, SpinnerComponent, EstadoUsuarioPipe, ChangeColorDirective],
   templateUrl: './tabla-usuarios.component.html',
   styleUrls: ['./tabla-usuarios.component.css']
 })
