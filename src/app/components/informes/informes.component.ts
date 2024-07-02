@@ -7,7 +7,7 @@ import { DataService } from '../../services/data.service';
 import { SpinnerComponent } from '../spinner/spinner.component';
 import { Observable } from 'rxjs';
 import { ExcelService } from '../../services/excel.service';
-import {Chart, registerables  } from 'chart.js';
+import {Chart, registerables, ChartType } from 'chart.js';
 
 Chart.register(...registerables);
 
@@ -22,8 +22,10 @@ export class InformesComponent implements OnInit, AfterViewInit {
   loading: boolean = false;
   turnos$!: Observable<any[]>;
   logs$!: Observable<any[]>;
+  medicos$!: Observable<any[]>;
   turnosArray: any[] = [];
   logsArray: any[] = [];
+  medicosArray: any[] = [];
   jsonLogs: any;
   currentDate = new Date();
   formattedDate = this.currentDate.toISOString().split('T')[0];// yyyy-mm-dd
@@ -34,7 +36,12 @@ export class InformesComponent implements OnInit, AfterViewInit {
   turnosFinalizadosPorMedicoArray: any[] = [];
   @ViewChild('turnosPorEspecialidadChart') chartContainer!: ElementRef<HTMLCanvasElement> | null;
   @ViewChild('turnosPorDiaChart') chartContainerDia!: ElementRef<HTMLCanvasElement>;
-  chart: Chart | undefined;
+  @ViewChild('turnosPorMedicoChart') chartContainerTurnosMedico!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('turnosFinChart') chartContainerTurnosFin!: ElementRef<HTMLCanvasElement>;
+  chartEspecialidad: Chart | undefined;
+  chartDia: Chart<"pie", number[], string> | undefined;
+  chartTurnosMedico: Chart | undefined;
+  chartTurnosFin: Chart<"doughnut", number[], string> | undefined;
 
 
   constructor(private router: Router, 
@@ -46,12 +53,8 @@ export class InformesComponent implements OnInit, AfterViewInit {
     this.fetchTurnos();
     this.fetchLogs();
     this.cdr.detectChanges();
-    //ver el timing para que se ejecute luego de que fetchea los datos.
-    this.turnosPorEspecialidadArray = this.getTurnosPorEspecialidad();
-    console.log('porespecialidad',this.turnosPorEspecialidadArray);
-    this.turnosPorDiaArray = this.getTurnosPorDia();
-    
   }
+
   ngAfterViewInit(): void {
     this.cdr.detectChanges();
     if (this.chartContainer && this.chartContainer.nativeElement) {
@@ -64,6 +67,11 @@ export class InformesComponent implements OnInit, AfterViewInit {
     } else {
       console.error('Canvas element not found or not initialized.');
     }
+    if (this.chartContainerTurnosMedico && this.chartContainerTurnosMedico.nativeElement) {
+      this.renderChartDia();
+    } else {
+      console.error('Canvas element not found or not initialized.');
+    }
   }
 
   fetchTurnos() {
@@ -72,9 +80,18 @@ export class InformesComponent implements OnInit, AfterViewInit {
     this.turnos$.subscribe({
       next: (turnos) => {
         this.turnosArray = turnos;
-        console.log(turnos);
+        this.turnosPorEspecialidadArray = this.getTurnosPorEspecialidad();
+        this.turnosPorDiaArray = this.getTurnosPorDia();
+        this.turnosPorMedicoArray = this.getTurnosSolicitadosUltimos15Dias();
+        this.turnosFinalizadosPorMedicoArray = this.getTurnosFinalizadosUltimos15Dias();
+        console.log('finalizados', this.turnosFinalizadosPorMedicoArray);
         this.loading = false;
         this.cdr.detectChanges();
+
+        this.renderChart();
+        this.renderChartDia();
+        this.renderChartDiaMedico();
+        this.renderChartFin();
       },
       error: (err) => {
         console.error('Error fetching turnos:', err);
@@ -104,10 +121,27 @@ export class InformesComponent implements OnInit, AfterViewInit {
       }
     });
   }
+  fetchMedicos() {
+    this.loading = true;
+    this.medicos$ = this.firestoreService.getEspecialistas();
+    this.medicos$.subscribe({
+      next: (medicos) => {
+        console.log(medicos);
+        this.medicosArray = medicos;
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error fetching logs:', err);
+        this.loading = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
 
   //por especialidad
   getTurnosPorEspecialidad(): any[] {
-    const turnosPorEspecialidad: { [key: string]: number } = {}; // Inicialización con tipo explícito
+    const turnosPorEspecialidad: { [key: string]: number } = {};
   
     this.turnosArray.forEach(turno => {
       const especialidad = turno.especialidad;
@@ -123,10 +157,10 @@ export class InformesComponent implements OnInit, AfterViewInit {
 
   //por fecha
   getTurnosPorDia(): any[] {
-    const turnosPorDia: { [key: string]: number } = {}; // Inicialización con tipo explícito
+    const turnosPorDia: { [key: string]: number } = {};
   
     this.turnosArray.forEach(turno => {
-      const fecha = turno.fecha; // Asumiendo que fecha es un string con formato "YYYY-MM-DD"
+      const fecha = turno.fecha;
       if (turnosPorDia[fecha]) {
         turnosPorDia[fecha]++;
       } else {
@@ -137,27 +171,52 @@ export class InformesComponent implements OnInit, AfterViewInit {
     return Object.entries(turnosPorDia).map(([fecha, cantidad]) => ({ fecha, cantidad }));
   }
 
-  //por médico en 15d
-  getTurnosSolicitadosUltimos15Dias(medico: string): number {
-    const fechaLimite = new Date();  // Fecha actual
+
+  //por médico en 15d anteriores
+  getTurnosSolicitadosUltimos15Dias(): { medico: string; cantidad: number; }[] {
+    const fechaLimite = new Date();
     fechaLimite.setDate(fechaLimite.getDate() - 15);  // Restar 15 días
   
-    return this.turnosArray.filter(turno =>
-      turno.especialista === medico &&
-      new Date(turno.fecha) >= fechaLimite
-    ).length;
+    const turnosPorMedico: { [key: string]: number } = {};
+  
+    this.turnosArray.forEach(turno => {
+      const medico = turno.especialista;
+      const fechaTurno = new Date(turno.fecha);
+  
+      if (fechaTurno >= fechaLimite) {
+        if (turnosPorMedico[medico]) {
+          turnosPorMedico[medico]++;
+        } else {
+          turnosPorMedico[medico] = 1;
+        }
+      }
+    });
+  
+    return Object.entries(turnosPorMedico).map(([medico, cantidad]) => ({ medico, cantidad }));
   }
 
   //finalizados
-  getTurnosFinalizadosUltimos15Dias(medico: string): number {
-    const fechaLimite = new Date();  // Fecha actual
+  getTurnosFinalizadosUltimos15Dias(): any[] {
+    const fechaLimite = new Date();
     fechaLimite.setDate(fechaLimite.getDate() - 15);  // Restar 15 días
   
-    return this.turnosArray.filter(turno =>
-      turno.especialista === medico &&
-      turno.estado === 'finalizado' &&
-      new Date(turno.fecha) >= fechaLimite
-    ).length;
+    const turnosFinalizadosPorMedico: { medico: string, cantidad: number }[] = [];
+  
+    // Obtener todos los médicos únicos
+    const medicosUnicos = Array.from(new Set(this.turnosArray.map(turno => turno.especialista)));
+  
+    // Iterar por cada médico y contar los turnos finalizados
+    medicosUnicos.forEach(medico => {
+      const cantidad = this.turnosArray.filter(turno =>
+        turno.especialista === medico &&
+        turno.estado === 'finalizado' &&
+        new Date(turno.fecha) >= fechaLimite
+      ).length;
+  
+      turnosFinalizadosPorMedico.push({ medico: medico, cantidad: cantidad });
+    });
+  
+    return turnosFinalizadosPorMedico;
   }
 
   //especialidad chart
@@ -174,10 +233,14 @@ export class InformesComponent implements OnInit, AfterViewInit {
       return;
     }
 
+    if (this.chartEspecialidad) {
+      this.chartEspecialidad.destroy(); // Destruir el gráfico anterior si existe
+    }
+
     const labels = this.turnosPorEspecialidadArray.map(data => data.especialidad);
     const data = this.turnosPorEspecialidadArray.map(data => data.cantidad);
 
-    new Chart(ctx, {
+    this.chartEspecialidad = new Chart(ctx, {
       type: 'bar',
       data: {
         labels: labels,
@@ -201,7 +264,6 @@ export class InformesComponent implements OnInit, AfterViewInit {
       }
     });
   }
-
  //por dia chart
  renderChartDia(): void {
   const ctx = this.chartContainerDia.nativeElement.getContext('2d');
@@ -210,26 +272,30 @@ export class InformesComponent implements OnInit, AfterViewInit {
     return;
   }
 
-  // Example data for turnos por día
-  const data = {
-    labels: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'],
-    datasets: [{
-      label: '# of Turnos',
-      data: [30, 25, 20, 15, 10],
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.6)',
-        'rgba(54, 162, 235, 0.6)',
-        'rgba(255, 206, 86, 0.6)',
-        'rgba(75, 192, 192, 0.6)',
-        'rgba(153, 102, 255, 0.6)'
-      ],
-      borderWidth: 1
-    }]
-  };
+  if (this.chartDia) {
+    this.chartDia.destroy(); // Destruir el gráfico anterior si existe
+  }
 
-  new Chart(ctx, {
+  const labels = this.turnosPorDiaArray.map(data => data.fecha);
+  const data = this.turnosPorDiaArray.map(data => data.cantidad);
+
+  this.chartDia = new Chart<'pie', number[], string>(ctx, {
     type: 'pie',
-    data: data,
+    data: {
+      labels: labels,
+      datasets: [{
+        label: '# of Turnos',
+        data: data,
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.6)',
+          'rgba(54, 162, 235, 0.6)',
+          'rgba(255, 206, 86, 0.6)',
+          'rgba(75, 192, 192, 0.6)',
+          'rgba(153, 102, 255, 0.6)'
+        ],
+        borderWidth: 1
+      }]
+    },
     options: {
       responsive: true,
       plugins: {
@@ -245,6 +311,98 @@ export class InformesComponent implements OnInit, AfterViewInit {
   });
 }
 
+//chart turnos por medico por dia
+ renderChartDiaMedico(): void {
+    const canvas = this.chartContainerTurnosMedico?.nativeElement;
+    if (!(canvas instanceof HTMLCanvasElement)) {
+      console.error('Elemento canvas no encontrado o no es instancia de HTMLCanvasElement');
+      return;
+    }
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) {
+      console.error('Contexto 2D no encontrado en el elemento canvas');
+      return;
+    }
+
+    if (this.chartTurnosMedico) {
+      this.chartTurnosMedico.destroy(); // Destruir el gráfico anterior si existe
+    }
+
+    const labels = this.turnosPorMedicoArray.map(data => data.medico);
+    const data = this.turnosPorMedicoArray.map(data => data.cantidad);
+
+    this.chartTurnosMedico = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Cantidad de Turnos por Medico en los ultimos 15 días.',
+          data: data,
+          backgroundColor: 'rgba(54, 162, 235, 0.6)',
+          borderColor: 'rgba(54, 162, 235, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              stepSize: 1
+            }
+          }
+        }
+      }
+    });
+  }
+
+  //turnos fin
+  renderChartFin(): void {
+    const ctx = this.chartContainerTurnosFin.nativeElement.getContext('2d');
+    if (!ctx) {
+      console.error('Failed to get 2D context from canvas.');
+      return;
+    }
+  
+    if (this.chartTurnosFin) {
+      this.chartTurnosFin.destroy(); // Destruir el gráfico anterior si existe
+    }
+  
+    const labels = this.turnosFinalizadosPorMedicoArray.map(data => data.medico);
+    const data = this.turnosFinalizadosPorMedicoArray.map(data => data.cantidad);
+  
+    this.chartTurnosFin = new Chart<'doughnut', number[], string>(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: '# of Turnos',
+          data: data,
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.6)',
+            'rgba(54, 162, 235, 0.6)',
+            'rgba(255, 206, 86, 0.6)',
+            'rgba(75, 192, 192, 0.6)',
+            'rgba(153, 102, 255, 0.6)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: 'Turnos Finalizados por médico en los últimos 15 Días'
+          }
+        }
+      }
+    });
+  }
 
   logout():void {
     this.router.navigate(['/welcome']);
