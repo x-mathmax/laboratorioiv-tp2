@@ -57,4 +57,8 @@ export class HistoriaClinicaComponent implements OnInit {
   goHome():void {
     this.router.navigate(['/home']);
   }
+
+  goPacientes():void {
+    this.router.navigate(['/pacientes']);
+  }
 }

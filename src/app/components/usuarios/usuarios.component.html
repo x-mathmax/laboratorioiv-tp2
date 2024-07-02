@@ -62,7 +62,7 @@
       <div class="form-container">
         
       <ng-container *ngIf="componenteActivo === 'administrador'">
-        <div class="scale-in-center">
+        <div class="roll-in-right">
           <app-alta-administrador></app-alta-administrador>
         </div>
       </ng-container>
@@ -71,12 +71,12 @@
           <app-tabla-usuarios></app-tabla-usuarios>
       </ng-container>
       <ng-container *ngIf="componenteActivo === 'paciente'">  
-        <div class="slit-in-horizontal">
+        <div class="slide-in-right">
           <app-alta-pacientes></app-alta-pacientes>
         </div>
       </ng-container>
       <ng-container *ngIf="componenteActivo === 'especialista'">  
-        <div class="slide-in-elliptic-top-fwd">
+        <div class="slide-in-blurred-right">
           <app-alta-especialistas></app-alta-especialistas>
         </div>
       </ng-container>

@@ -63,7 +63,7 @@ export class HomeComponent implements OnInit{
   } 
 
   goHc():void {
-    this.router.navigate(['/historiaclinica']);
+    this.router.navigate(['/pacientes']);
   }
 
   goInformes():void {

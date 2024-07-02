@@ -27,5 +27,7 @@ export const routes: Routes = [
     { path: 'historiaclinica',
         loadComponent: () => import('./components/historia-clinica/historia-clinica.component').then(c => c.HistoriaClinicaComponent) },
     { path: 'informes',
-        loadComponent: () => import('./components/informes/informes.component').then(c => c.InformesComponent) }
+        loadComponent: () => import('./components/informes/informes.component').then(c => c.InformesComponent) },
+    { path: 'pacientes',
+        loadComponent: () => import('./components/pacientes/pacientes.component').then(c => c.PacientesComponent) }
 ];

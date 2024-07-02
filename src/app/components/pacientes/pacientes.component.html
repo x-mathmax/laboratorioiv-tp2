@@ -1,0 +1,72 @@
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid">
+              <img id="logo" src="../../../assets/logo.png" alt="logo sanatorio" >
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
+                <span class="navbar-text">
+                    <ul class="navbar-nav">
+                        <li class="nav-item" >
+                          <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-md text-white backgroundBlue"
+                          (click)="goHome()">Volver</button>
+                        </li>
+                        <li class="nav-item" >
+                            <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-md text-white backgroundBlue"
+                            (click)="goHc()">Historia Clinica</button>
+                          </li>
+                        <li class="nav-item">                    
+                          <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-md text-white backgroundBlue"
+                          (click)="logout()">Cerrar Sesión</button>
+                        </li>
+                      </ul>
+                </span>
+              </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <app-spinner *ngIf="loading"></app-spinner>
+        <div class="fab-container" *ngIf="detallesPacientesArray.length > 0">
+            <button mat-fab class="colorButton" [matMenuTriggerFor]="menu" aria-label="FAB Menu">
+              <mat-icon>add</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item *ngFor="let user of detallesPacientesArray" (click)="selectUser(user)">
+                <mat-icon><img class="iconos" *ngIf="user.imagenUno" [src]="user.imagenUno" alt="">
+                  </mat-icon>
+                <span>{{ user.nombre }}</span>
+              </button>
+            </mat-menu>
+        </div>
+
+
+          <table *ngIf="filteredTurnos.length">
+            <thead>
+              <tr>
+                <th>Paciente</th>
+                <th>Especialista</th>
+                <th>Especialidad</th>
+                <th>Fecha</th>
+                <th>Horario</th>
+                <th>Reseña</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let turno of filteredTurnos">
+                <td>{{ turno.nombrePaciente }}</td>
+                <td>{{ turno.nombreEspecialista }}</td>
+                <td>{{ turno.especialidad }}</td>
+                <td>{{ turno.fecha | date }}</td>
+                <td>{{ turno.horario }}</td>
+                <td>
+                  <button *ngIf="turno.resenia" (click)="verResenia(turno)">Ver Reseña</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+    </div>    
+</body>

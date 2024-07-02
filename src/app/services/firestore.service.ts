@@ -452,27 +452,6 @@ async agregarAdministrador(administrador: Administrador): Promise<void> {
   }
 
 
-  // async modificarEspecialista(userMail: string, valorHoraEntrada: string, valorHoraSalida:string, especialidad: string) {
-  //   try {
-  //     const col = collection(this.firestore, 'usuarios');
-  //     const q = query(col, where('email', '==', userMail));
-  //     console.log(userMail);
-
-  //     const querySnapshot = await getDocs(q);
-  //     if (!querySnapshot.empty) {
-        
-  //       const docRef = querySnapshot.docs[0].ref;
-  //       await updateDoc(docRef, {   
-  //         horaEntrada : valorHoraEntrada,
-  //         horaSalida: valorHoraSalida,
-  //         especialidad: especialidad});
-  //     } 
-  //   } catch (error) {
-  //     console.error('El especialista no pudo ser actualizado:', error);
-  //     throw error;
-  //   }
-  // }
-
   getPacientes(): Observable<Paciente[]> {
     const usersRef = collection(this.firestore, 'usuarios');
     const q = query(usersRef, where('tipoUser', '==', 'paciente'));
@@ -568,4 +547,34 @@ async agregarAdministrador(administrador: Administrador): Promise<void> {
       console.error('No se pudo agregar el log. Error: ', error);
     }
   }
+
+  getTurnosFinalizadosEsp(especialistaMail: string): Observable<Turno[]> {
+    const usersRef = collection(this.firestore, 'turnos');
+    const q = query(usersRef, where('especialista', '==', especialistaMail),
+    where('estado', '==', 'finalizado'),);
+    
+    return from(getDocs(q)).pipe(
+      map(querySnapshot => 
+        querySnapshot.docs.map(doc => {
+          const data = doc.data() as Turno;
+          return {
+            paciente: data.paciente,
+            nombrePaciente: data.nombrePaciente,
+            especialista: data.especialista,
+            nombreEspecialista: data.nombreEspecialista,
+            especialidad: data.especialidad,
+            diagnostico: data.diagnostico,
+            resenia: data.resenia,
+            estado: data.estado,
+            calificacionAtencion: data.calificacionAtencion,
+            comentario: data.comentario,
+            fecha: data.fecha,
+            horario: data.horario,
+            encuesta: data.encuesta,
+          };
+        })
+      )
+    );
+  }
+
 }
