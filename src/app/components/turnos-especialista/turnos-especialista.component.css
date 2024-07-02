@@ -105,3 +105,15 @@ table {
   .filtroIndividual {
     margin-right: 20px;
   }  
+
+  .yellow-text {
+    color:  #EABE3F;
+  }
+  
+  .red-text {
+    color: red;
+  }
+  
+  .blue-text {
+    color: #285E96;
+  }

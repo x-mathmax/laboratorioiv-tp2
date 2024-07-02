@@ -8,11 +8,12 @@ import { SpinnerComponent } from '../spinner/spinner.component';
 import { Observable } from 'rxjs';
 import { AltaHcComponent } from '../alta-hc/alta-hc.component';
 import { MatDialog } from '@angular/material/dialog';
+import { EstadoColorPipe } from '../../pipes/estado-color.pipe';
 
 @Component({
   selector: 'app-turnos-especialista',
   standalone: true,
-  imports: [CommonModule, SpinnerComponent],
+  imports: [CommonModule, SpinnerComponent, EstadoColorPipe],
   templateUrl: './turnos-especialista.component.html',
   styleUrl: './turnos-especialista.component.css'
 })

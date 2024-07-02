@@ -53,7 +53,7 @@
               <td>{{ turno.paciente }}</td>
               <td>{{ turno.fecha}}</td>
               <td>{{ turno.horario}}</td>
-              <td [ngClass]="{'bold': true, 'large-text': true}">{{ turno.estado }}</td>
+              <td [ngClass]="turno.estado | estadoColor">{{ turno.estado}}</td>
               <td>
                 <button *ngIf="turno.estado === 'pendiente'" (click)="cancelarTurno(turno)" style="margin-right: 1rem;">Cancelar</button>
                 <button *ngIf="turno.estado === 'pendiente'"  (click)="rechazarTurno(turno)" style="margin-right: 1rem;">Rechazar</button>
