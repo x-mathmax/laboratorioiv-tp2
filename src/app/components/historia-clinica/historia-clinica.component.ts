@@ -18,6 +18,7 @@ export class HistoriaClinicaComponent implements OnInit {
   perfilData: any;
   historiasClinicasPaciente$!:Observable<any[]>;
   historiasClinicasEspecialista$!:Observable<any[]>;
+  hcaux : string[] = [];
   usuario!: any;
 
   constructor(private router: Router, private firestoreService: FirestoreService, private data: DataService){

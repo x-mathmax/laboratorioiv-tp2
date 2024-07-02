@@ -6,16 +6,18 @@ import { Router } from '@angular/router';
 import { DataService } from '../../services/data.service';
 import { SpinnerComponent } from '../spinner/spinner.component';
 import { Observable } from 'rxjs';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-turnos-paciente',
   standalone: true,
-  imports: [CommonModule, SpinnerComponent],
+  imports: [CommonModule, SpinnerComponent, FormsModule],
   templateUrl: './turnos-paciente.component.html',
   styleUrl: './turnos-paciente.component.css'
 })
 export class TurnosPacienteComponent implements OnInit {
   turnos$!: Observable<any[]>;
+  hcs$!: Observable<any[]>;
   turnosArray: any[] = [];
   filteredTurnos: any[] = [];
   especialidadFilter: string = '';
@@ -24,6 +26,9 @@ export class TurnosPacienteComponent implements OnInit {
   hora : any;
   userIn: string;
   loading: boolean = false;
+  historiasClinicas: any[] = [];
+  combinedData: any[] = [];
+  searchCriteria: string = '';
 
   constructor(private firestoreService: FirestoreService, private router: Router, private data: DataService, private cdr: ChangeDetectorRef) {
     this.hora = new Date(2024, 0, 1, 0, 0, 0, 0);
@@ -33,6 +38,7 @@ export class TurnosPacienteComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchData();
+    this.fetchHc();
     this.cdr.detectChanges();
   }
 
@@ -44,6 +50,7 @@ export class TurnosPacienteComponent implements OnInit {
         console.log('adentro del next', turnos);
         this.turnosArray = turnos;
         this.applyFilters();
+        this.combineDataIfReady();
         console.log('turnos array',this.turnosArray)
         this.loading = false;
         this.cdr.detectChanges();
@@ -56,12 +63,37 @@ export class TurnosPacienteComponent implements OnInit {
     });
   }
 
-  applyFilters(): void {
-    this.filteredTurnos = this.turnosArray.filter(turno => {
-      return (!this.especialidadFilter || turno.especialidad.includes(this.especialidadFilter)) &&
-             (!this.especialistaFilter || turno.especialista.includes(this.especialistaFilter));
+  fetchHc() {
+    this.loading = true;
+    this.hcs$ = this.firestoreService.getHcFiltrado(this.userIn, 'emailPaciente');
+    this.hcs$.subscribe({
+      next: (hcs) => {
+        console.log('adentro del next', hcs);
+        this.historiasClinicas = hcs;
+        this.combineDataIfReady();
+        this.applyFilters();
+        console.log('hcs',this.historiasClinicas)
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error fetching users:', err);
+        this.loading = false;
+        this.cdr.detectChanges();
+      }
     });
   }
+
+  combineDataIfReady(): void {
+    if (this.turnosArray.length && this.historiasClinicas.length) {
+      this.combinedData = this.turnosArray.map(turno => {
+        const hc = this.historiasClinicas.find(hc => hc.fechaTurno === turno.fecha && hc.emailEspecialista === turno.especialista);
+        return { ...turno, historiaClinica: hc || null };
+      });
+      console.log('combined', this.combinedData);
+    }
+  }
+
 
   onEspecialidadFilterChange(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
@@ -152,5 +184,56 @@ export class TurnosPacienteComponent implements OnInit {
 
   volver() :void{
     this.router.navigate(['/home']);
+  }
+
+  verHistoriaClinica(hc: any) : void {
+    const histClin = this.quitarId(hc);
+    const mensaje = this.convertObjectToText(histClin);
+    console.log(mensaje);
+    this.data.executePopUp(mensaje);
+  }
+
+  convertObjectToText(obj: any): string {
+    return Object.entries(obj)
+      .map(([key, value]) => `${key}: ${value}`)
+      .join('\n');
+  }
+
+  quitarId(obj: any): any {
+    if (obj && typeof obj === 'object') {
+      const { id, ...objSinId } = obj;
+      return objSinId;
+    }
+    return obj;
+  }
+
+
+  applyFilters(): void {
+    this.filteredTurnos = this.combinedData.filter(turno => {
+      return this.containsValue(turno, this.searchCriteria) ||
+             (turno.historiaClinica && this.containsValue(turno.historiaClinica, this.searchCriteria));
+    });
+  }
+
+  onSearchChange(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    this.searchCriteria = inputElement.value;
+    this.applyFilters();
+  }
+
+  containsValue(obj: any, searchValue: string): boolean {
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        const value = obj[key];
+        if (typeof value === 'object' && value !== null) {
+          if (this.containsValue(value, searchValue)) {
+            return true;
+          }
+        } else if (value !== null && value !== undefined && value.toString().toLowerCase().includes(searchValue.toLowerCase())) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 }

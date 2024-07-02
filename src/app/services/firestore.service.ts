@@ -537,27 +537,6 @@ async agregarAdministrador(administrador: Administrador): Promise<void> {
     });
   }
 
-  // getHcFiltrado(email: string, user:string): Observable<any> {
-  //   const usersRef = collection(this.firestore, 'historiasclinicas') as CollectionReference<DocumentData>;
-  //   const q = query(usersRef, where(user, '==', email));
-    
-  //   return new Observable<any>(observer => {
-  //     getDocs(q)
-  //       .then(snapshot => {
-  //         if (snapshot.empty) {
-  //           observer.next(null); // Si no encuentro nada que coincida devuelvo un nullcito
-  //         } else {
-  //           const doc = snapshot.docs[0];
-  //           const data = doc.data();
-  //           const id = doc.id;
-  //           observer.next({ id, ...data }); // Armo doc con sus datos.
-  //         }
-  //         observer.complete();
-  //       })
-  //       .catch(error => observer.error(error));
-  //   });
-  // }
-
   getHcFiltrado(email: string, user: string): Observable<any[]> {
     const usersRef = collection(this.firestore, 'historiasclinicas') as CollectionReference<DocumentData>;
     const q = query(usersRef, where(user, '==', email));
@@ -566,14 +545,14 @@ async agregarAdministrador(administrador: Administrador): Promise<void> {
       getDocs(q)
         .then(snapshot => {
           if (snapshot.empty) {
-            observer.next([]); // Si no encuentro nada que coincida devuelvo un array vacío
+            observer.next([]); // Si no coincide devuelvo array vacio
           } else {
             const docs = snapshot.docs.map(doc => {
               const data = doc.data();
               const id = doc.id;
               return { id, ...data }; // Armo doc con sus datos.
             });
-            observer.next(docs); // Devuelvo todos los documentos encontrados en un array
+            observer.next(docs); //modifique para devolver un array
           }
           observer.complete();
         })
