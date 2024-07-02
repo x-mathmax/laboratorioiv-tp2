@@ -8,6 +8,7 @@ import { SpinnerComponent } from '../spinner/spinner.component';
 import { Observable } from 'rxjs';
 import { ExcelService } from '../../services/excel.service';
 import {Chart, registerables, ChartType } from 'chart.js';
+import { PdfService } from '../../services/pdf.service';
 
 Chart.register(...registerables);
 
@@ -46,8 +47,10 @@ export class InformesComponent implements OnInit, AfterViewInit {
 
   constructor(private router: Router, 
     private excelService: ExcelService,
-  private firestoreService: FirestoreService,
-  private cdr: ChangeDetectorRef){}
+    private firestoreService: FirestoreService,
+    private cdr: ChangeDetectorRef,
+    private pdfService: PdfService,
+    private data: DataService){}
 
   ngOnInit(): void {
     this.fetchTurnos();
@@ -416,5 +419,57 @@ export class InformesComponent implements OnInit, AfterViewInit {
     this.excelService.exportAsExcelFile(this.jsonLogs, this.fileName);
   }
 
+  exportarEspecialidadPdf() {
+    if (this.chartContainer != null) {
+      this.pdfService.exportChartToPdf(this.chartContainer.nativeElement, 'cantidad-de-turnos.pdf');
+    } else {
+      console.error("error");
+      this.data.executePopUp("Ha ocurrido un error en la exportación.");
+    }
+    
+  }
 
+  exportarTurnosPdf() {
+    if (this.chartContainerDia != null) {
+      this.pdfService.exportChartToPdf(this.chartContainerDia.nativeElement, 'turnos-por-dia.pdf');
+    } else {
+      console.error("error");
+      this.data.executePopUp("Ha ocurrido un error en la exportación.");
+    }
+    
+  }
+
+  exportarTurnosMedico() {
+    if (this.chartContainerTurnosMedico != null) {
+      this.pdfService.exportChartToPdf(this.chartContainerTurnosMedico.nativeElement, 'turnos-por-medico.pdf');
+    } else {
+      console.error("error");
+      this.data.executePopUp("Ha ocurrido un error en la exportación.");
+    }
+    
+  }
+
+  exportarTurnosFin() {
+    if (this.chartContainerTurnosFin != null) {
+      this.pdfService.exportChartToPdf(this.chartContainerTurnosFin.nativeElement, 'turnos-por-medico.pdf');
+    } else {
+      console.error("error");
+      this.data.executePopUp("Ha ocurrido un error en la exportación.");
+    }
+  }
+
+  exportarTodos(): void {
+    if (this.chartContainer != null && this.chartContainerDia != null && this.chartContainerTurnosMedico !== null
+      && this.chartContainerTurnosFin !== null
+    ) {
+      const chartCanvases = [
+        this.chartContainer.nativeElement,
+        this.chartContainerDia.nativeElement,
+        this.chartContainerTurnosMedico.nativeElement,
+        this.chartContainerTurnosFin.nativeElement,
+      ];
+      this.pdfService.exportMultipleChartsToPdf(chartCanvases, 'exportacion-general.pdf');
+    }
+
+  }
 }

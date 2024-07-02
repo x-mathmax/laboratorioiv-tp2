@@ -16,6 +16,10 @@
                         </li>
                         <li class="nav-item" >
                           <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-md text-white backgroundBlue"
+                          (click)="exportarTodos()">Exportar charts</button>
+                        </li>
+                        <li class="nav-item" >
+                          <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-md text-white backgroundBlue"
                           (click)="generarExcel()">Generar Excel Logs</button>
                         </li>
                         <li class="nav-item">                    
@@ -31,9 +35,13 @@
 
     <div style="width: 40%; margin: auto;">
         <canvas #turnosPorEspecialidadChart style="margin-top: 2rem;"></canvas>
+        <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-md text-white backgroundBlue" style="margin-top: 1rem;" (click)="exportarEspecialidadPdf()">Exportar Gráfico</button>
         <canvas #turnosPorDiaChart style="margin-top: 2rem;"></canvas>
+        <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-md text-white backgroundBlue" style="margin-top: 1rem;" (click)="exportarTurnosPdf()">Exportar Gráfico</button>
         <canvas #turnosPorMedicoChart style="margin-top: 2rem;"></canvas>
+        <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-md text-white backgroundBlue" style="margin-top: 1rem;" (click)="exportarTurnosMedico()">Exportar Gráfico</button>
         <canvas #turnosFinChart style="margin-top: 2rem;"></canvas>
+        <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-md text-white backgroundBlue" style="margin-top: 1rem;" (click)="exportarTurnosFin()">Exportar Gráfico</button>
     </div>
 
         
